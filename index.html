@@ -857,11 +857,49 @@ const ROLE_NAMES={GK:'Вратарь',DF:'Защитник',MF:'Полузащи
 // Fans
 let fans=[];
 
+// Kit clash detection — ensure teams are visually distinct
+function hexToRgb(hex){
+  hex=hex.replace('#','');
+  if(hex.length===3)hex=hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+  const n=parseInt(hex,16);
+  return [(n>>16)&255,(n>>8)&255,n&255];
+}
+function colorDist(a,b){
+  const [r1,g1,b1]=hexToRgb(a),[r2,g2,b2]=hexToRgb(b);
+  return Math.sqrt((r1-r2)**2+(g1-g2)**2+(b1-b2)**2);
+}
+function resolveKitClash(myTeam,oppTeam){
+  const dist=colorDist(myTeam.c1,oppTeam.c1);
+  if(dist<120){
+    // Colors clash — pick a clearly different away kit
+    // Dark away kits for contrast
+    const darkKits=[
+      {c1:'#1a1a2e',c2:'#e94560',c3:'#1a1a2e'}, // dark navy + red accent
+      {c1:'#2d2d2d',c2:'#ffd700',c3:'#2d2d2d'}, // charcoal + gold
+      {c1:'#800020',c2:'#fff',c3:'#800020'},      // burgundy + white
+      {c1:'#004d00',c2:'#fff',c3:'#004d00'},      // dark green + white
+      {c1:'#ff4500',c2:'#fff',c3:'#1a1a1a'},      // orange-red + white
+      {c1:'#4a0080',c2:'#ffd700',c3:'#4a0080'},   // purple + gold
+    ];
+    // Pick the one most different from player's team
+    let bestKit=darkKits[0],bestDist=0;
+    darkKits.forEach(k=>{
+      const d=colorDist(myTeam.c1,k.c1);
+      if(d>bestDist){bestDist=d;bestKit=k;}
+    });
+    return bestKit;
+  }
+  return {c1:oppTeam.c1,c2:oppTeam.c2,c3:oppTeam.c3};
+}
+
 function initGame(){
   if(G.selTeam===null)G.selTeam=0;
   // Pick random opponent from same league or random
   const sameLg=TEAMS.filter((t,i)=>i!==G.selTeam);
   G.oppIdx=TEAMS.indexOf(sameLg[Math.floor(Math.random()*sameLg.length)]);
+  // Resolve kit clash
+  const awayKit=resolveKitClash(TEAMS[G.selTeam],TEAMS[G.oppIdx]);
+  G.awayKit=awayKit;
   G.sc=[0,0];G.time=0;G.on=true;penState=null;
   document.getElementById('penOv').classList.remove('show');
   document.getElementById('s1').textContent='0';
@@ -1048,10 +1086,13 @@ function resetPos(){
   const freshStart=my.length===0;
   my=[];opp=[];
   const mt=TEAMS[G.selTeam],ot=TEAMS[G.oppIdx];
+  // Use away kit colors for opponent to avoid clash
+  const ak=G.awayKit||{c1:ot.c1,c2:ot.c2,c3:ot.c3};
+  const otKit={...ot,c1:ak.c1,c2:ak.c2,c3:ak.c3};
   const mf=[[.06,.5,'GK'],[.18,.15,'DF'],[.18,.38,'DF'],[.18,.62,'DF'],[.18,.85,'DF'],[.32,.25,'MF'],[.32,.5,'MF'],[.32,.75,'MF'],[.44,.18,'FW'],[.44,.5,'FW'],[.44,.82,'FW']];
   mf.forEach((f,i)=>my.push(mkPlayer(f,i,'my',mt,G.selTeam)));
   const of2=[[.94,.5,'GK'],[.82,.15,'DF'],[.82,.38,'DF'],[.82,.62,'DF'],[.82,.85,'DF'],[.68,.25,'MF'],[.68,.5,'MF'],[.68,.75,'MF'],[.56,.18,'FW'],[.56,.5,'FW'],[.56,.82,'FW']];
-  of2.forEach((f,i)=>opp.push(mkPlayer(f,i,'opp',ot,G.oppIdx)));
+  of2.forEach((f,i)=>opp.push(mkPlayer(f,i,'opp',otKit,G.oppIdx)));
 
   if(freshStart){
     // Create 5 bench players per team
@@ -1063,7 +1104,7 @@ function resetPos(){
         name:mySquad[(11+i)%mySquad.length],
         hair:['#111','#DAA520','#8B4513','#c0392b','#2c1810'][i],
         skin:['#d4a574','#f5c6a0','#8d5524','#f5c6a0','#c68642'][i],energy:100});
-      oppBench.push({role:r,side:'opp',c1:ot.c1,c2:ot.c2,c3:ot.c3,num:12+i,
+      oppBench.push({role:r,side:'opp',c1:ak.c1,c2:ak.c2,c3:ak.c3,num:12+i,
         name:opSquad[(11+i)%opSquad.length],
         hair:['#1a1a1a','#DAA520','#2c1810','#8B4513','#111'][i],
         skin:['#f5c6a0','#c68642','#d4a574','#8d5524','#f5c6a0'][i],energy:100});
@@ -2430,12 +2471,17 @@ function draw(){
     const aT=p.animT||0;
     const aP=aT/30; // 0→1 animation progress (1=start, 0=end)
 
-    // Smooth position interpolation
-    const lerpSpeed=0.25;
-    const cx=m.group.position.x+(w.x-m.group.position.x)*lerpSpeed;
-    const cz=m.group.position.z+(w.z-m.group.position.z)*lerpSpeed;
-    // Reset default pose
-    m.group.position.set(cx,0,cz);
+    // Smooth position interpolation (snap if too far = after reset)
+    const dx2=w.x-m.group.position.x,dz2=w.z-m.group.position.z;
+    const dist2=dx2*dx2+dz2*dz2;
+    if(dist2>100){// snap — too far (reset/init)
+      m.group.position.set(w.x,0,w.z);
+    } else {
+      const lerpSpeed=0.25;
+      m.group.position.set(
+        m.group.position.x+dx2*lerpSpeed,0,
+        m.group.position.z+dz2*lerpSpeed);
+    }
     m.group.rotation.x=0;m.group.rotation.z=0;
     m.body.position.y=2.2;m.body.rotation.x=0;m.body.rotation.z=0;
     m.head.position.y=3.55;m.head.rotation.x=0;
