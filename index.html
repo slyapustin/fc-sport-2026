@@ -195,6 +195,7 @@ canvas{display:block;width:100%;height:100%}
 <div class="screen" id="gameScreen">
 <div class="top-bar">
 <div class="tb-team"><div class="tb-dot" id="dot1"></div><div class="tb-name" id="tn1">-</div></div>
+<div class="tb-pause" onclick="togglePause()" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;z-index:5">&#9208;&#65039;</div>
 <div class="tb-mid">
 <span class="tb-score" id="s1">0</span>
 <span style="color:#555;font-size:20px">:</span>
@@ -262,6 +263,7 @@ canvas{display:block;width:100%;height:100%}
 <div class="ab" data-a="skill">&#10024;<span>ФИНТ</span><span class="gp-hint">&#9651; &#9661;</span></div>
 <div class="ab" data-a="rainbow">&#127752;<span>РАДУГА</span><span class="gp-hint">L1</span></div>
 <div class="ab" data-a="sub" style="background:rgba(0,180,80,.3);border-color:rgba(0,220,100,.5)">&#128260;<span>ЗАМЕНА</span><span class="gp-hint">R1</span></div>
+<div class="ab" data-a="switch" style="background:rgba(100,100,255,.3);border-color:rgba(140,140,255,.5)">&#128101;<span>ИГРОК</span><span class="gp-hint">L3</span></div>
 </div>
 </div>
 </div>
@@ -1335,6 +1337,7 @@ function doAct(a){
     case 'skill':doSkill();setCD(a,1800);break;
     case 'rainbow':doRainbow();setCD(a,2200);break;
     case 'sub':openSubPanel();break;
+    case 'switch':switchPlayer();break;
   }
 }
 function setCD(a,ms){cds[a]=true;const b=document.querySelector(`[data-a="${a}"]`);if(b)b.classList.add('cd');setTimeout(()=>{cds[a]=false;if(b)b.classList.remove('cd');},ms);}
@@ -2314,11 +2317,7 @@ function buildStadium(){
   makeAdBoard(FL/2+1.5, 0.75, 0, FW, -Math.PI/2,
     'PUMA   |   LOTOS   |   APPLE   |   PZU', '#2a0a0a');
 
-  // Roof far stand
-  const roofGeo=new THREE.BoxGeometry(FL+16,0.5,12);
-  const roofMat=new THREE.MeshLambertMaterial({color:0x222233});
-  const roof=new THREE.Mesh(roofGeo,roofMat);
-  roof.position.set(0,15,-FW/2-8);scene.add(roof);
+  // Roof removed — fans fully visible from camera angle
 }
 
 function createPlayerMesh(){
