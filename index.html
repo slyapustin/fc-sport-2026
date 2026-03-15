@@ -2240,11 +2240,11 @@ function buildStadium(){
     fanMeshes.push({body,head,armL,armR,baseY:y+1.8,phase:Math.random()*6.28,speed:0.5+Math.random()*3});
   }
 
-  // Far stand fans — 3 rows x 30 fans (big)
+  // Far stand fans — 3 rows x 30 fans (sit ON TOP of stands)
   for(let row=0;row<3;row++){
     for(let col=0;col<30;col++){
       const x=-FL/2+3+col*(FL/30);
-      const y=1+row*4;
+      const y=4+row*4; // top of stand tier
       const z=-FW/2-4-row*3;
       if(Math.random()<0.85) makeFan(x,y,z,seatColors[(row+col)%4]);
     }
@@ -2253,7 +2253,7 @@ function buildStadium(){
   for(let row=0;row<2;row++){
     for(let col=0;col<30;col++){
       const x=-FL/2+3+col*(FL/30);
-      const y=1+row*4;
+      const y=4+row*4;
       const z=FW/2+4+row*3;
       if(Math.random()<0.8) makeFan(x,y,z,seatColors[(row+col)%4]);
     }
@@ -2263,7 +2263,7 @@ function buildStadium(){
     for(let col=0;col<15;col++){
       const z=-FW/2+3+col*(FW/15);
       const x=-FL/2-4-row*3;
-      const y=1+row*3;
+      const y=3.5+row*3;
       if(Math.random()<0.7) makeFan(x,y,z,seatColors[(row+col)%4]);
     }
   }
@@ -2272,7 +2272,7 @@ function buildStadium(){
     for(let col=0;col<15;col++){
       const z=-FW/2+3+col*(FW/15);
       const x=FL/2+4+row*3;
-      const y=1+row*3;
+      const y=3.5+row*3;
       if(Math.random()<0.7) makeFan(x,y,z,seatColors[(row+col)%4]);
     }
   }
