@@ -1059,13 +1059,13 @@ function resetPos(){
     subsLeft=3;
   }
 
-  ball={x:W/2,y:H/2,vx:0,vy:0,owner:null,free:true,rb:false,rbt:0,rbs:null,rbe:null,z:0,target:null};
+  ball={x:W/2,y:H/2,vx:0,vy:0,vz:0,owner:null,free:true,rb:false,rbt:0,rbs:null,rbe:null,z:0,target:null};
   ref={x:W/2,y:H/2+40,vx:0,vy:0};
   giveBall(my[9]);
   ctrl=my[9];
 }
 
-function giveBall(p){if(ball.owner)ball.owner.hb=false;ball.owner=p;ball.free=false;p.hb=true;ball.vx=0;ball.vy=0;ball.target=null;}
+function giveBall(p){if(ball.owner)ball.owner.hb=false;ball.owner=p;ball.free=false;p.hb=true;ball.vx=0;ball.vy=0;ball.vz=0;ball.z=0;ball.target=null;}
 function dd(a,b){return Math.sqrt((a.x-b.x)**2+(a.y-b.y)**2)}
 function relBall(){if(ball.owner)ball.owner.hb=false;ball.owner=null;ball.free=true;}
 
@@ -1320,10 +1320,13 @@ function doShoot(){
   }
 
   const dx=gx-ball.x,dy=gy-ball.y,d=Math.sqrt(dx*dx+dy*dy);
-  // Power: stronger close, weaker far
-  const power=7+Math.random()*3-distFactor*2;
+  // Power: stronger shots
+  const power=10+Math.random()*4-distFactor*2;
   ball.vx=(dx/d)*power;
   ball.vy=(dy/d)*power;
+  // Arc trajectory — ball rises then falls under gravity
+  ball.vz=3+Math.random()*3+distFactor*2; // higher arc from further out
+  ball.z=0;
 
   lastShooter=ctrl.name;
   ctrl.anim='kick';ctrl.animT=25;
@@ -1395,7 +1398,9 @@ function runAI(){
           const gy=H/2+(Math.random()-.5)*GH_HALF*(miss?2:0.8);
           const gx=miss?-10:4;
           const dx2=gx-ball.x,dy2=gy-ball.y,d2=Math.sqrt(dx2*dx2+dy2*dy2);
-          ball.vx=(dx2/d2)*4;ball.vy=(dy2/d2)*4;
+          const aiPow=8+Math.random()*4;
+          ball.vx=(dx2/d2)*aiPow;ball.vy=(dy2/d2)*aiPow;
+          ball.vz=2+Math.random()*3;ball.z=0;
           if(miss) commentary(o.name+' бьёт — мимо!');
           else commentary(o.name+' бьёт по воротам!');
           exciteFans(0.5);
@@ -1520,6 +1525,11 @@ function update(){
   // Free ball
   if(ball.free&&!ball.rb){
     ball.x+=ball.vx;ball.y+=ball.vy;ball.vx*=.97;ball.vy*=.97;
+    // Vertical arc — gravity pulls ball down
+    if(ball.vz!==undefined&&(ball.z>0||ball.vz>0)){
+      ball.z+=ball.vz;ball.vz-=0.4; // gravity
+      if(ball.z<=0){ball.z=0;ball.vz=0;} // landed
+    }
     if(ball.y<BR||ball.y>H-BR){ball.vy*=-1;ball.y=Math.max(BR,Math.min(H-BR,ball.y));}
 
     // GK saves — goalkeepers intercept shots near goal
@@ -1547,10 +1557,11 @@ function update(){
     if(ball.x>W-5&&Math.abs(ball.y-H/2)<GH_HALF){goalScored('my');return;}
     if(ball.x<BR||ball.x>W-BR){ball.vx*=-.5;ball.x=Math.max(BR,Math.min(W-BR,ball.x));}
 
-    // Pickup — only if ball is slow enough (not mid-shot)
+    // Pickup — only if ball is low and slow enough (not mid-shot or in the air)
     const ballSpd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
+    const ballHigh=(ball.z||0)>8; // ball is too high to reach
     [...my,...opp].forEach(p=>{
-      if(dd(p,ball)<PR+BR+5){
+      if(!ballHigh&&dd(p,ball)<PR+BR+5){
         // If ball is a fast shot, only the target or GK can pick it up
         if(ballSpd>4){
           if(p.role==='GK') { giveBall(p); return; }
@@ -2123,29 +2134,29 @@ function buildStadium(){
     );
     back.position.set(x,y+0.8,z-0.6);scene.add(back);
 
-    // Fan figure — BIG and visible
+    // Fan figure — scaled up for visibility
     const fc=fanJerseys[Math.floor(Math.random()*fanJerseys.length)];
     const sk=skinTones[Math.floor(Math.random()*4)];
     // Body (big cylinder)
     const body=new THREE.Mesh(
-      new THREE.CylinderGeometry(0.6,0.5,1.8,8),
-      new THREE.MeshLambertMaterial({color:fc})
+      new THREE.CylinderGeometry(0.9,0.7,2.4,8),
+      new THREE.MeshStandardMaterial({color:fc,emissive:fc,emissiveIntensity:0.3})
     );
-    body.position.set(x,y+1.5,z);scene.add(body);
+    body.position.set(x,y+1.8,z);scene.add(body);
     // Head (big sphere)
     const head=new THREE.Mesh(
-      new THREE.SphereGeometry(0.5,8,8),
-      new THREE.MeshLambertMaterial({color:sk})
+      new THREE.SphereGeometry(0.7,8,8),
+      new THREE.MeshStandardMaterial({color:sk,emissive:sk,emissiveIntensity:0.2})
     );
-    head.position.set(x,y+2.7,z);scene.add(head);
+    head.position.set(x,y+3.4,z);scene.add(head);
     // Arms
-    const armMat=new THREE.MeshLambertMaterial({color:fc});
-    const armL=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,1,6),armMat);
-    armL.position.set(x-0.7,y+1.8,z);scene.add(armL);
-    const armR=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,1,6),armMat);
-    armR.position.set(x+0.7,y+1.8,z);scene.add(armR);
+    const armMat=new THREE.MeshStandardMaterial({color:fc,emissive:fc,emissiveIntensity:0.3});
+    const armL=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.18,1.3,6),armMat);
+    armL.position.set(x-1,y+2,z);scene.add(armL);
+    const armR=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.18,1.3,6),armMat);
+    armR.position.set(x+1,y+2,z);scene.add(armR);
 
-    fanMeshes.push({body,head,armL,armR,baseY:y+1.5,phase:Math.random()*6.28,speed:0.5+Math.random()*3});
+    fanMeshes.push({body,head,armL,armR,baseY:y+1.8,phase:Math.random()*6.28,speed:0.5+Math.random()*3});
   }
 
   // Far stand fans — 3 rows x 30 fans (big)
@@ -2449,7 +2460,7 @@ function draw(){
   // Ball
   if(ballMesh){
     const bw=toWorld(ball.x,ball.y);
-    const bz=ball.rb?(ball.z||0):0;
+    const bz=ball.z||0;
     ballMesh.position.set(bw.x,0.4+bz*0.06,bw.z);
     ballMesh.rotation.x+=0.05*(Math.abs(ball.vx)+Math.abs(ball.vy));
     ballShadow.position.set(bw.x,0.02,bw.z);
