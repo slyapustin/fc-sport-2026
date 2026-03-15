@@ -2,15 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>FC Sport 2026</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a1628;font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;height:100vh;height:100dvh;width:100vw;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;overscroll-behavior:none;-webkit-overflow-scrolling:touch}
-.screen{display:none;flex-direction:column;height:100vh;height:100dvh;width:100vw}.screen.active{display:flex}
+body{background:#0a1628;font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;height:100vh;width:100vw;user-select:none;-webkit-user-select:none;touch-action:none}
+.screen{display:none;flex-direction:column;height:100vh;width:100vw}.screen.active{display:flex}
 
 /* MENU */
 #menuScreen{background:linear-gradient(135deg,#0a1628,#1a3a5c,#0a1628);align-items:center;justify-content:center;gap:16px}
@@ -138,19 +136,6 @@ canvas{display:block;width:100%;height:100%}
 /* END */
 #endScreen{background:linear-gradient(135deg,#0a1628,#1a3a5c);align-items:center;justify-content:center;gap:12px}
 .er{font-size:32px;font-weight:900;color:#ffd700}.es{font-size:56px;font-weight:900;color:#fff}.ew{color:#ffd700;font-size:17px}
-
-/* iPad / tablet scaling */
-@media(min-width:768px){
-.joy-zone{width:160px;height:160px}
-.joy-base{width:140px;height:140px}
-.joy-knob{width:56px;height:56px}
-.ab{width:72px;height:72px;font-size:24px}
-.ab span{font-size:9px}
-.ctrls{padding:16px}
-.menu-title{font-size:56px}
-.btn{padding:16px 44px;font-size:20px;min-width:260px}
-.teams-grid{grid-template-columns:repeat(5,1fr);max-width:600px;gap:12px}
-}
 </style>
 </head>
 <body>
@@ -1157,7 +1142,7 @@ function setupJoy(){
   const z=document.getElementById('jZ'),k=document.getElementById('jK');
   let on=false,cx2=0,cy2=0;
   function start(x,y){const r=z.getBoundingClientRect();cx2=r.left+r.width/2;cy2=r.top+r.height/2;on=true;move(x,y);}
-  function move(x,y){if(!on)return;let dx=x-cx2,dy=y-cy2;const d=Math.sqrt(dx*dx+dy*dy),mx=z.clientWidth*0.35;if(d>mx){dx=(dx/d)*mx;dy=(dy/d)*mx;}k.style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;jd=d>8?{x:dx/mx,y:dy/mx}:{x:0,y:0};}
+  function move(x,y){if(!on)return;let dx=x-cx2,dy=y-cy2;const d=Math.sqrt(dx*dx+dy*dy),mx=42;if(d>mx){dx=(dx/d)*mx;dy=(dy/d)*mx;}k.style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;jd=d>8?{x:dx/mx,y:dy/mx}:{x:0,y:0};}
   function end(){on=false;k.style.transform='translate(-50%,-50%)';jd={x:0,y:0};}
   z.addEventListener('touchstart',e=>{e.preventDefault();start(e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
   z.addEventListener('touchmove',e=>{e.preventDefault();move(e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
@@ -2504,20 +2489,6 @@ function draw(){
 }
 
 window.addEventListener('resize',()=>{if(G.on)resize();});
-window.addEventListener('orientationchange',()=>setTimeout(()=>{if(G.on)resize();},200));
-
-// Prevent iOS rubber-band scrolling and context menu on game area
-document.addEventListener('touchmove',e=>{
-  // Allow scrolling in team grid, shop grid, collection grid, and sub panel
-  if(e.target.closest('.teams-grid,.cards-grid,.sub-panel'))return;
-  if(e.target.closest('.screen'))e.preventDefault();
-},{passive:false});
-document.addEventListener('contextmenu',e=>e.preventDefault());
-
-// iOS Safari visual viewport resize (address bar show/hide)
-if(window.visualViewport){
-  window.visualViewport.addEventListener('resize',()=>{if(G.on)resize();});
-}
 </script>
 </body>
 </html>
