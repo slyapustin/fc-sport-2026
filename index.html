@@ -2406,10 +2406,14 @@ function draw(){
     if(moving&&p.anim==='idle')p.anim='run';
     if(!moving&&p.anim==='run')p.anim='idle';
 
-    // Face direction of movement
+    // Face direction of movement — smooth rotation
     if(moving){
-      const angle=Math.atan2(p.vx,p.vy);
-      m.group.rotation.y=angle;
+      const targetAngle=Math.atan2(p.vx,p.vy);
+      let da=targetAngle-m.group.rotation.y;
+      // Normalize angle diff to [-PI, PI]
+      while(da>Math.PI)da-=Math.PI*2;
+      while(da<-Math.PI)da+=Math.PI*2;
+      m.group.rotation.y+=da*0.15;
     }
 
     // Colors
@@ -2426,8 +2430,12 @@ function draw(){
     const aT=p.animT||0;
     const aP=aT/30; // 0→1 animation progress (1=start, 0=end)
 
+    // Smooth position interpolation
+    const lerpSpeed=0.25;
+    const cx=m.group.position.x+(w.x-m.group.position.x)*lerpSpeed;
+    const cz=m.group.position.z+(w.z-m.group.position.z)*lerpSpeed;
     // Reset default pose
-    m.group.position.set(w.x,0,w.z);
+    m.group.position.set(cx,0,cz);
     m.group.rotation.x=0;m.group.rotation.z=0;
     m.body.position.y=2.2;m.body.rotation.x=0;m.body.rotation.z=0;
     m.head.position.y=3.55;m.head.rotation.x=0;
