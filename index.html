@@ -979,20 +979,18 @@ function showLineup(){
   document.getElementById('luVs').textContent=mt.n+' vs '+ot.n;
 
   const roles={GK:'ВРТ',DF:'ЗАЩ',MF:'ПЗ',FW:'НАП'};
-  const names1=['Иванов','Петров','Сидоров','Козлов','Новиков','Морозов','Волков','Зайцев','Павлов','Семёнов','Орлов'];
-  const names2=['Гарсия','Мартинес','Лопес','Сильва','Фернандес','Родригес','Мюллер','Шмидт','Тейлор','Браун','Джонс'];
 
-  function renderTeamList(players,namesList,container,teamColor){
-    container.innerHTML=`<div class="lu-tname" style="background:${teamColor};color:#fff">${container===document.getElementById('luTeam1')?mt.n:ot.n}</div>`;
-    players.forEach((p,i)=>{
+  function renderTeamList(players,container,teamColor,teamName){
+    container.innerHTML=`<div class="lu-tname" style="background:${teamColor};color:#fff">${teamName}</div>`;
+    players.forEach(p=>{
       const div=document.createElement('div');
       div.className='lu-player';
-      div.innerHTML=`<span class="lu-num">${p.num}</span><span>${namesList[i%namesList.length]}</span><span class="lu-role">${roles[p.role]||p.role}</span>`;
+      div.innerHTML=`<span class="lu-num">${p.num}</span><span>${p.name}</span><span class="lu-role">${roles[p.role]||p.role}</span>`;
       container.appendChild(div);
     });
   }
-  renderTeamList(my,names1,document.getElementById('luTeam1'),mt.c1==='#fff'?mt.c2:mt.c1);
-  renderTeamList(opp,names2,document.getElementById('luTeam2'),ot.c1==='#fff'?ot.c2:ot.c1);
+  renderTeamList(my,document.getElementById('luTeam1'),mt.c1==='#fff'?mt.c2:mt.c1,mt.n);
+  renderTeamList(opp,document.getElementById('luTeam2'),ot.c1==='#fff'?ot.c2:ot.c1,ot.n);
 
   document.getElementById('lineupOv').classList.add('show');
 
