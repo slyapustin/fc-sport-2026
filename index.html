@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -63,6 +63,9 @@ canvas{display:block;width:100%;height:100%}
 .gp-hint{font-size:5px!important;color:rgba(255,255,255,.35);letter-spacing:0!important;margin-top:0!important}
 .ab:active,.ab.pr{background:rgba(255,215,0,.35);border-color:#ffd700;transform:scale(1.12)}
 .ab.cd{opacity:.3;pointer-events:none}
+.pwr-bar{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:44px;height:5px;background:rgba(0,0,0,.6);border-radius:3px;overflow:hidden;opacity:0;transition:opacity .15s}
+.pwr-bar.show{opacity:1}
+.pwr-fill{height:100%;width:0%;border-radius:3px;transition:background .1s}
 
 /* HELP */
 .help-ov{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;padding:16px;gap:8px}
@@ -165,29 +168,29 @@ canvas{display:block;width:100%;height:100%}
 <div class="card-modal" id="cardModal">
 <div class="cm-close" onclick="closeCardModal()">&times;</div>
 <canvas id="bigCard"></canvas>
-<button class="btn cm-buy" id="cmBuy" style="display:none">КУПИТЬ</button>
+<button class="btn cm-buy" id="cmBuy" style="display:none">BUY</button>
 </div>
-<div class="goal-ov" id="goalOv"><div class="goal-t">ГОООЛ!</div><div class="goal-s" id="goalW"></div></div>
+<div class="goal-ov" id="goalOv"><div class="goal-t">GOOOAL!</div><div class="goal-s" id="goalW"></div></div>
 
 <!-- MENU -->
 <div class="screen active" id="menuScreen">
 <div class="menu-ball">&#9917;</div>
 <div class="menu-title">FC SPORT 2026</div>
-<div class="menu-sub">&#9917; Футбольная Игра &#9917;</div>
-<button class="btn" onclick="go('teamScreen')">&#9917; ИГРАТЬ</button>
-<button class="btn bl" onclick="go('shopScreen')">&#127183; МАГАЗИН</button>
-<button class="btn bl" onclick="go('collScreen')">&#11088; КОЛЛЕКЦИЯ</button>
-<div class="coins-d">&#129689; <span id="mC">500</span> монет</div>
+<div class="menu-sub">&#9917; Football Game &#9917;</div>
+<button class="btn" onclick="go('teamScreen')">&#9917; PLAY</button>
+<button class="btn bl" onclick="go('shopScreen')">&#127183; SHOP</button>
+<button class="btn bl" onclick="go('collScreen')">&#11088; COLLECTION</button>
+<div class="coins-d">&#129689; <span id="mC">500</span> coins</div>
 </div>
 
 <!-- TEAM SELECT -->
 <div class="screen" id="teamScreen">
-<div class="pg-title">&#128085; Выбери команду</div>
+<div class="pg-title">&#128085; Choose your team</div>
 <div class="league-tabs" id="lTabs"></div>
 <div class="teams-grid" id="tG"></div>
 <div class="btn-row">
-<button class="btn" onclick="startMatch()">НАЧАТЬ &#9917;</button>
-<button class="btn bl" onclick="go('menuScreen')">НАЗАД</button>
+<button class="btn" onclick="startMatch()">START &#9917;</button>
+<button class="btn bl" onclick="go('menuScreen')">BACK</button>
 </div>
 </div>
 
@@ -206,64 +209,64 @@ canvas{display:block;width:100%;height:100%}
 </div>
 <div class="field-wrap" id="fieldWrap">
 <div id="threeContainer" style="width:100%;height:100%;position:absolute;top:0;left:0"></div>
-<div class="comment-box hide" id="comBox">Добро пожаловать на матч!</div>
+<div class="comment-box hide" id="comBox">Welcome to the match!</div>
 <div class="lineup-ov" id="lineupOv">
-<div class="lu-vs" id="luVs">КОМАНДА 1 vs КОМАНДА 2</div>
+<div class="lu-vs" id="luVs">TEAM 1 vs TEAM 2</div>
 <div class="lu-teams">
 <div class="lu-team" id="luTeam1"></div>
 <div class="lu-team" id="luTeam2"></div>
 </div>
 <div style="color:#8ab4f8;font-size:10px;margin-top:8px;text-align:center;line-height:1.6;max-width:380px">
-&#128377;&#65039; Джойстик/WASD — движение &nbsp;|&nbsp; &#127942; X/Space — удар &nbsp;|&nbsp; &#128075; O/Q — пас<br>
-&#129454; &#9632;/E — отбор &nbsp;|&nbsp; &#10024; &#9651;/R — финт &nbsp;|&nbsp; &#127752; L1/F — радуга &nbsp;|&nbsp; &#9889; R2/Shift — спринт
+&#128377;&#65039; Joystick/WASD — move &nbsp;|&nbsp; &#127942; X/Space — shoot &nbsp;|&nbsp; &#128075; O/Q — pass<br>
+&#129454; &#9632;/E — tackle &nbsp;|&nbsp; &#10024; &#9651;/R — skill &nbsp;|&nbsp; &#127752; L1/F — rainbow &nbsp;|&nbsp; &#9889; R2/Shift — sprint
 </div>
-<button class="btn" onclick="closeLineup()" style="margin-top:10px">НАЧАТЬ МАТЧ! &#9917;</button>
+<button class="btn" onclick="closeLineup()" style="margin-top:10px">KICK OFF! &#9917;</button>
 </div>
 <div class="sub-panel" id="subPanel">
-<div class="sub-title">&#128260; ЗАМЕНА</div>
-<div class="sub-section">НА ПОЛЕ (нажми кого менять)</div>
+<div class="sub-title">&#128260; SUBSTITUTION</div>
+<div class="sub-section">ON FIELD (tap who to replace)</div>
 <div id="subOnField"></div>
-<div class="sub-section">ЗАПАСНЫЕ (нажми кого выпустить)</div>
+<div class="sub-section">BENCH (tap who to bring on)</div>
 <div id="subBench"></div>
-<button class="btn bl" onclick="closeSubPanel()" style="margin-top:12px;min-width:160px">ОТМЕНА</button>
+<button class="btn bl" onclick="closeSubPanel()" style="margin-top:12px;min-width:160px">CANCEL</button>
 </div>
 <div class="pause-ov" id="pauseOv">
-<h2>&#9208;&#65039; ПАУЗА</h2>
-<div class="pause-info">Tab — сменить игрока | Esc — пауза</div>
-<button class="btn" onclick="togglePause()">ПРОДОЛЖИТЬ &#9654;&#65039;</button>
-<button class="btn bl" onclick="go('menuScreen')">В МЕНЮ</button>
+<h2>&#9208;&#65039; PAUSED</h2>
+<div class="pause-info">Tab — switch player | Esc — pause</div>
+<button class="btn" onclick="togglePause()">RESUME &#9654;&#65039;</button>
+<button class="btn bl" onclick="go('menuScreen')">MENU</button>
 </div>
 <div class="pen-overlay" id="penOv">
-<div class="pen-title">СЕРИЯ ПЕНАЛЬТИ</div>
+<div class="pen-title">PENALTY SHOOTOUT</div>
 <div class="pen-score" id="penSc">0 : 0</div>
 <div class="pen-marks" id="penMarks"></div>
-<div class="pen-hint" id="penHint">Нажмите УДАР чтобы бить!</div>
+<div class="pen-hint" id="penHint">Press SHOOT to take your kick!</div>
 </div>
 <div class="help-ov" id="helpO">
-<h2>&#9917; КАК ИГРАТЬ</h2>
-<div class="hr"><div class="hi">&#128377;&#65039;</div>Джойстик слева — двигать игрока</div>
-<div class="hr"><div class="hi">&#128075;</div>ПАС — передать мяч партнёру</div>
-<div class="hr"><div class="hi">&#127942;</div>УДАР — бить по воротам</div>
-<div class="hr"><div class="hi">&#9889;</div>СПРИНТ — ускорение</div>
-<div class="hr"><div class="hi">&#129454;</div>ОТБОР — <b>подбеги к сопернику и нажми!</b></div>
-<div class="hr"><div class="hi">&#10024;</div>ФИНТ — обвести защитника</div>
-<div class="hr"><div class="hi">&#127752;</div>РАДУГА — перебросить мяч</div>
-<div style="color:#aaa;font-size:11px;margin-top:4px">ПК: WASD + Q пас, Space удар, E отбор, R финт, F радуга, Shift спринт</div>
-<div style="color:#8ab4f8;font-size:11px;margin-top:6px;font-weight:700">&#127918; ГЕЙМПАД PS5:</div>
-<div style="color:#aaa;font-size:10px">Левый стик — движение | X — удар | O — пас | &#9632; — отбор | &#9651; — финт | L1 — радуга | R1 — замена | R2 — спринт</div>
-<button class="btn" onclick="closeHelp()" style="margin-top:10px">ПОНЯТНО! &#128293;</button>
+<h2>&#9917; HOW TO PLAY</h2>
+<div class="hr"><div class="hi">&#128377;&#65039;</div>Left joystick — move player</div>
+<div class="hr"><div class="hi">&#128075;</div>PASS — pass to a teammate</div>
+<div class="hr"><div class="hi">&#127942;</div>SHOOT — shoot at goal</div>
+<div class="hr"><div class="hi">&#9889;</div>SPRINT — speed boost</div>
+<div class="hr"><div class="hi">&#129454;</div>TACKLE — <b>get close to opponent and press!</b></div>
+<div class="hr"><div class="hi">&#10024;</div>SKILL — beat the defender</div>
+<div class="hr"><div class="hi">&#127752;</div>RAINBOW — flick ball over</div>
+<div style="color:#aaa;font-size:11px;margin-top:4px">PC: WASD + Q pass, Space shoot, E tackle, R skill, F rainbow, Shift sprint</div>
+<div style="color:#8ab4f8;font-size:11px;margin-top:6px;font-weight:700">&#127918; PS5 GAMEPAD:</div>
+<div style="color:#aaa;font-size:10px">Left stick — move | X — shoot | O — pass | &#9632; — tackle | &#9651; — skill | L1 — rainbow | R1 — sub | R2 — sprint</div>
+<button class="btn" onclick="closeHelp()" style="margin-top:10px">GOT IT! &#128293;</button>
 </div>
 <div class="ctrls" id="cL">
 <div class="joy-zone" id="jZ"><div class="joy-base"></div><div class="joy-knob" id="jK"></div></div>
 <div class="act-btns">
-<div class="ab" data-a="pass">&#128075;<span>ПАС</span><span class="gp-hint">&#9898; O</span></div>
-<div class="ab" data-a="shoot">&#127942;<span>УДАР</span><span class="gp-hint">&#10060; X</span></div>
-<div class="ab" data-a="sprint">&#9889;<span>СПРИНТ</span><span class="gp-hint">R2</span></div>
-<div class="ab" data-a="tackle" style="background:rgba(255,60,60,.3);border-color:rgba(255,100,100,.5)">&#129454;<span>ОТБОР</span><span class="gp-hint">&#9632; &#9633;</span></div>
-<div class="ab" data-a="skill">&#10024;<span>ФИНТ</span><span class="gp-hint">&#9651; &#9661;</span></div>
-<div class="ab" data-a="rainbow">&#127752;<span>РАДУГА</span><span class="gp-hint">L1</span></div>
-<div class="ab" data-a="sub" style="background:rgba(0,180,80,.3);border-color:rgba(0,220,100,.5)">&#128260;<span>ЗАМЕНА</span><span class="gp-hint">R1</span></div>
-<div class="ab" data-a="switch" style="background:rgba(100,100,255,.3);border-color:rgba(140,140,255,.5)">&#128101;<span>ИГРОК</span><span class="gp-hint">L3</span></div>
+<div class="ab" data-a="pass">&#128075;<span>PASS</span><span class="gp-hint">&#9898; O</span></div>
+<div class="ab" data-a="shoot">&#127942;<span>SHOOT</span><span class="gp-hint">&#10060; X</span><div class="pwr-bar" id="pwrBar"><div class="pwr-fill" id="pwrFill"></div></div></div>
+<div class="ab" data-a="sprint">&#9889;<span>SPRINT</span><span class="gp-hint">R2</span></div>
+<div class="ab" data-a="tackle" style="background:rgba(255,60,60,.3);border-color:rgba(255,100,100,.5)">&#129454;<span>TACKLE</span><span class="gp-hint">&#9632; &#9633;</span></div>
+<div class="ab" data-a="skill">&#10024;<span>SKILL</span><span class="gp-hint">&#9651; &#9661;</span></div>
+<div class="ab" data-a="rainbow">&#127752;<span>RAINBOW</span><span class="gp-hint">L1</span></div>
+<div class="ab" data-a="sub" style="background:rgba(0,180,80,.3);border-color:rgba(0,220,100,.5)">&#128260;<span>SUB</span><span class="gp-hint">R1</span></div>
+<div class="ab" data-a="switch" style="background:rgba(100,100,255,.3);border-color:rgba(140,140,255,.5)">&#128101;<span>SWITCH</span><span class="gp-hint">L3</span></div>
 </div>
 </div>
 </div>
@@ -271,27 +274,27 @@ canvas{display:block;width:100%;height:100%}
 
 <!-- SHOP -->
 <div class="screen" id="shopScreen">
-<div class="pg-title">&#127183; Магазин</div>
+<div class="pg-title">&#127183; Shop</div>
 <div class="coins-d">&#129689; <span id="sC">500</span></div>
 <div class="cards-grid" id="sG"></div>
-<button class="btn bl" onclick="go('menuScreen')" style="margin-top:8px">НАЗАД</button>
+<button class="btn bl" onclick="go('menuScreen')" style="margin-top:8px">BACK</button>
 </div>
 
 <!-- COLLECTION -->
 <div class="screen" id="collScreen">
-<div class="pg-title">&#11088; Коллекция</div>
-<div style="color:#8ab4f8;margin-bottom:8px">Карточек: <span id="cN">0</span></div>
+<div class="pg-title">&#11088; Collection</div>
+<div style="color:#8ab4f8;margin-bottom:8px">Cards: <span id="cN">0</span></div>
 <div class="cards-grid" id="cG"></div>
-<button class="btn bl" onclick="go('menuScreen')" style="margin-top:8px">НАЗАД</button>
+<button class="btn bl" onclick="go('menuScreen')" style="margin-top:8px">BACK</button>
 </div>
 
 <!-- END -->
 <div class="screen" id="endScreen">
-<div class="er" id="eR">ПОБЕДА!</div>
+<div class="er" id="eR">VICTORY!</div>
 <div class="es" id="eS">0 : 0</div>
-<div class="ew" id="eW">+100 монет</div>
-<button class="btn" onclick="go('menuScreen')" style="margin-top:18px">В МЕНЮ</button>
-<button class="btn bl" onclick="go('teamScreen')">ЕЩЁ МАТЧ</button>
+<div class="ew" id="eW">+100 coins</div>
+<button class="btn" onclick="go('menuScreen')" style="margin-top:18px">MENU</button>
+<button class="btn bl" onclick="go('teamScreen')">PLAY AGAIN</button>
 </div>
 
 <script>
@@ -300,119 +303,126 @@ let G={coins:500,cards:[],selTeam:null,selLeague:0,sc:[0,0],time:0,on:false,oppI
 
 // ========== LEAGUES & TEAMS ==========
 const LEAGUES=[
-  {name:'Сборные',flag:'&#127760;'},
-  {name:'АПЛ',flag:'&#127988;'},
-  {name:'Ла Лига',flag:'&#127466;&#127480;'},
-  {name:'Серия А',flag:'&#127470;&#127481;'},
-  {name:'Бундеслига',flag:'&#127465;&#127466;'},
-  {name:'Лига 1',flag:'&#127467;&#127479;'},
-  {name:'Другие',flag:'&#11088;'},
+  {name:'National',flag:'&#127760;'},
+  {name:'EPL',flag:'&#127988;'},
+  {name:'La Liga',flag:'&#127466;&#127480;'},
+  {name:'Serie A',flag:'&#127470;&#127481;'},
+  {name:'Bundesliga',flag:'&#127465;&#127466;'},
+  {name:'Ligue 1',flag:'&#127467;&#127479;'},
+  {name:'RPL',flag:'&#127479;&#127482;'},
+  {name:'Other',flag:'&#11088;'},
 ];
 
 const TEAMS=[
-  // Сборные
-  {n:'Россия',c1:'#fff',c2:'#0039a6',c3:'#d52b1e',lg:0},
-  {n:'Бразилия',c1:'#009c3b',c2:'#ffdf00',c3:'#009c3b',lg:0},
-  {n:'Аргентина',c1:'#75aadb',c2:'#fff',c3:'#75aadb',lg:0},
-  {n:'Франция',c1:'#002395',c2:'#fff',c3:'#ed2939',lg:0},
-  {n:'Германия',c1:'#fff',c2:'#000',c3:'#dd0000',lg:0},
-  {n:'Испания',c1:'#c60b1e',c2:'#ffc400',c3:'#c60b1e',lg:0},
-  {n:'Англия',c1:'#fff',c2:'#cf081f',c3:'#002395',lg:0},
-  {n:'Италия',c1:'#0066cc',c2:'#fff',c3:'#0066cc',lg:0},
-  {n:'Португалия',c1:'#006600',c2:'#ff0000',c3:'#006600',lg:0},
-  {n:'Хорватия',c1:'#ff0000',c2:'#fff',c3:'#0000cc',lg:0},
-  {n:'Бельгия',c1:'#c8102e',c2:'#ffd200',c3:'#000',lg:0},
-  {n:'Нидерланды',c1:'#ff6600',c2:'#fff',c3:'#ff6600',lg:0},
-  {n:'Уругвай',c1:'#5cbfeb',c2:'#fff',c3:'#5cbfeb',lg:0},
-  {n:'Мексика',c1:'#006847',c2:'#fff',c3:'#ce1126',lg:0},
-  {n:'Япония',c1:'#002395',c2:'#fff',c3:'#bc002d',lg:0},
-  {n:'Южная Корея',c1:'#c60b1e',c2:'#fff',c3:'#003478',lg:0},
-  // АПЛ
-  {n:'Ман Сити',c1:'#6cabdd',c2:'#fff',c3:'#1c2c5b',lg:1},
-  {n:'Арсенал',c1:'#ef0107',c2:'#fff',c3:'#063672',lg:1},
-  {n:'Ливерпуль',c1:'#c8102e',c2:'#fff',c3:'#c8102e',lg:1},
-  {n:'Челси',c1:'#034694',c2:'#fff',c3:'#034694',lg:1},
-  {n:'Ман Юнайтед',c1:'#da291c',c2:'#fff',c3:'#000',lg:1},
-  {n:'Тоттенхэм',c1:'#fff',c2:'#132257',c3:'#132257',lg:1},
-  {n:'Ньюкасл',c1:'#000',c2:'#fff',c3:'#000',lg:1},
-  {n:'Астон Вилла',c1:'#670e36',c2:'#95bfe5',c3:'#670e36',lg:1},
-  // Ла Лига
-  {n:'Реал Мадрид',c1:'#fff',c2:'#febe10',c3:'#00529f',lg:2},
-  {n:'Барселона',c1:'#a50044',c2:'#004d98',c3:'#a50044',lg:2},
-  {n:'Атлетико',c1:'#c8102e',c2:'#fff',c3:'#272e61',lg:2},
-  {n:'Севилья',c1:'#fff',c2:'#d40027',c3:'#d40027',lg:2},
-  {n:'Реал Сосьедад',c1:'#003da5',c2:'#fff',c3:'#003da5',lg:2},
-  {n:'Вильярреал',c1:'#ffdf00',c2:'#005da0',c3:'#ffdf00',lg:2},
-  // Серия А
-  {n:'Интер',c1:'#0068a8',c2:'#000',c3:'#0068a8',lg:3},
-  {n:'Милан',c1:'#fb090b',c2:'#000',c3:'#fb090b',lg:3},
-  {n:'Ювентус',c1:'#000',c2:'#fff',c3:'#000',lg:3},
-  {n:'Наполи',c1:'#12a0d7',c2:'#fff',c3:'#12a0d7',lg:3},
-  {n:'Рома',c1:'#8e1f2f',c2:'#f0bc42',c3:'#8e1f2f',lg:3},
-  {n:'Лацио',c1:'#87d8f7',c2:'#fff',c3:'#87d8f7',lg:3},
-  // Бундеслига
-  {n:'Бавария',c1:'#dc052d',c2:'#fff',c3:'#0066b2',lg:4},
-  {n:'Дортмунд',c1:'#fde100',c2:'#000',c3:'#fde100',lg:4},
-  {n:'Байер',c1:'#e32221',c2:'#000',c3:'#e32221',lg:4},
-  {n:'Лейпциг',c1:'#dd0741',c2:'#fff',c3:'#001f47',lg:4},
-  // Лига 1
-  {n:'ПСЖ',c1:'#004170',c2:'#c8102e',c3:'#fff',lg:5},
-  {n:'Марсель',c1:'#2faee0',c2:'#fff',c3:'#2faee0',lg:5},
-  {n:'Монако',c1:'#c8102e',c2:'#fff',c3:'#c8102e',lg:5},
-  {n:'Лион',c1:'#fff',c2:'#002b5c',c3:'#ed1c24',lg:5},
-  // Другие
-  {n:'Аякс',c1:'#fff',c2:'#c8102e',c3:'#000',lg:6},
-  {n:'Порту',c1:'#003da5',c2:'#fff',c3:'#003da5',lg:6},
-  {n:'Бенфика',c1:'#c8102e',c2:'#fff',c3:'#c8102e',lg:6},
-  {n:'Галатасарай',c1:'#ff6600',c2:'#c8102e',c3:'#ff6600',lg:6},
-  {n:'Фенербахче',c1:'#ffed00',c2:'#003da5',c3:'#ffed00',lg:6},
-  {n:'Зенит',c1:'#2faee0',c2:'#fff',c3:'#2faee0',lg:6},
-  {n:'Спартак',c1:'#c8102e',c2:'#fff',c3:'#c8102e',lg:6},
-  {n:'ЦСКА',c1:'#c8102e',c2:'#003da5',c3:'#fff',lg:6},
+  // National
+  {n:'Russia',c1:'#fff',c2:'#0039a6',c3:'#d52b1e',lg:0},
+  {n:'Brazil',c1:'#009c3b',c2:'#ffdf00',c3:'#009c3b',lg:0},
+  {n:'Argentina',c1:'#75aadb',c2:'#fff',c3:'#75aadb',lg:0},
+  {n:'France',c1:'#002395',c2:'#fff',c3:'#ed2939',lg:0},
+  {n:'Germany',c1:'#fff',c2:'#000',c3:'#dd0000',lg:0},
+  {n:'Spain',c1:'#c60b1e',c2:'#ffc400',c3:'#c60b1e',lg:0},
+  {n:'England',c1:'#fff',c2:'#cf081f',c3:'#002395',lg:0},
+  {n:'Italy',c1:'#0066cc',c2:'#fff',c3:'#0066cc',lg:0},
+  {n:'Portugal',c1:'#006600',c2:'#ff0000',c3:'#006600',lg:0},
+  {n:'Croatia',c1:'#ff0000',c2:'#fff',c3:'#0000cc',lg:0},
+  {n:'Belgium',c1:'#c8102e',c2:'#ffd200',c3:'#000',lg:0},
+  {n:'Netherlands',c1:'#ff6600',c2:'#fff',c3:'#ff6600',lg:0},
+  {n:'Uruguay',c1:'#5cbfeb',c2:'#fff',c3:'#5cbfeb',lg:0},
+  {n:'Mexico',c1:'#006847',c2:'#fff',c3:'#ce1126',lg:0},
+  {n:'Japan',c1:'#002395',c2:'#fff',c3:'#bc002d',lg:0},
+  {n:'South Korea',c1:'#c60b1e',c2:'#fff',c3:'#003478',lg:0},
+  // EPL
+  {n:'Man City',c1:'#6cabdd',c2:'#fff',c3:'#1c2c5b',lg:1},
+  {n:'Arsenal',c1:'#ef0107',c2:'#fff',c3:'#063672',lg:1},
+  {n:'Liverpool',c1:'#c8102e',c2:'#fff',c3:'#c8102e',lg:1},
+  {n:'Chelsea',c1:'#034694',c2:'#fff',c3:'#034694',lg:1},
+  {n:'Man United',c1:'#da291c',c2:'#fff',c3:'#000',lg:1},
+  {n:'Tottenham',c1:'#fff',c2:'#132257',c3:'#132257',lg:1},
+  {n:'Newcastle',c1:'#000',c2:'#fff',c3:'#000',lg:1},
+  {n:'Aston Villa',c1:'#670e36',c2:'#95bfe5',c3:'#670e36',lg:1},
+  // La Liga
+  {n:'Real Madrid',c1:'#fff',c2:'#febe10',c3:'#00529f',lg:2},
+  {n:'Barcelona',c1:'#a50044',c2:'#004d98',c3:'#a50044',lg:2},
+  {n:'Atletico',c1:'#c8102e',c2:'#fff',c3:'#272e61',lg:2},
+  {n:'Sevilla',c1:'#fff',c2:'#d40027',c3:'#d40027',lg:2},
+  {n:'Real Sociedad',c1:'#003da5',c2:'#fff',c3:'#003da5',lg:2},
+  {n:'Villarreal',c1:'#ffdf00',c2:'#005da0',c3:'#ffdf00',lg:2},
+  // Serie A
+  {n:'Inter',c1:'#0068a8',c2:'#000',c3:'#0068a8',lg:3},
+  {n:'AC Milan',c1:'#fb090b',c2:'#000',c3:'#fb090b',lg:3},
+  {n:'Juventus',c1:'#000',c2:'#fff',c3:'#000',lg:3},
+  {n:'Napoli',c1:'#12a0d7',c2:'#fff',c3:'#12a0d7',lg:3},
+  {n:'Roma',c1:'#8e1f2f',c2:'#f0bc42',c3:'#8e1f2f',lg:3},
+  {n:'Lazio',c1:'#87d8f7',c2:'#fff',c3:'#87d8f7',lg:3},
+  // Bundesliga
+  {n:'Bayern',c1:'#dc052d',c2:'#fff',c3:'#0066b2',lg:4},
+  {n:'Dortmund',c1:'#fde100',c2:'#000',c3:'#fde100',lg:4},
+  {n:'Leverkusen',c1:'#e32221',c2:'#000',c3:'#e32221',lg:4},
+  {n:'Leipzig',c1:'#dd0741',c2:'#fff',c3:'#001f47',lg:4},
+  // Ligue 1
+  {n:'PSG',c1:'#004170',c2:'#c8102e',c3:'#fff',lg:5},
+  {n:'Marseille',c1:'#2faee0',c2:'#fff',c3:'#2faee0',lg:5},
+  {n:'Monaco',c1:'#c8102e',c2:'#fff',c3:'#c8102e',lg:5},
+  {n:'Lyon',c1:'#fff',c2:'#002b5c',c3:'#ed1c24',lg:5},
+  // Other
+  {n:'Ajax',c1:'#fff',c2:'#c8102e',c3:'#000',lg:6},
+  {n:'Porto',c1:'#003da5',c2:'#fff',c3:'#003da5',lg:6},
+  {n:'Benfica',c1:'#c8102e',c2:'#fff',c3:'#c8102e',lg:6},
+  {n:'Galatasaray',c1:'#ff6600',c2:'#c8102e',c3:'#ff6600',lg:6},
+  {n:'Fenerbahce',c1:'#ffed00',c2:'#003da5',c3:'#ffed00',lg:6},
+  // RPL
+  {n:'Zenit',c1:'#2faee0',c2:'#fff',c3:'#2faee0',lg:7},
+  {n:'Spartak',c1:'#c8102e',c2:'#fff',c3:'#c8102e',lg:7},
+  {n:'CSKA',c1:'#c8102e',c2:'#003da5',c3:'#fff',lg:7},
+  {n:'Dynamo',c1:'#fff',c2:'#0057b8',c3:'#0057b8',lg:7},
+  {n:'Lokomotiv',c1:'#006b35',c2:'#c8102e',c3:'#006b35',lg:7},
+  {n:'Krasnodar',c1:'#000',c2:'#006b35',c3:'#000',lg:7},
+  {n:'Rostov',c1:'#fde100',c2:'#003da5',c3:'#fde100',lg:7},
+  {n:'Akhmat',c1:'#006b35',c2:'#fff',c3:'#006b35',lg:7},
 ];
 
 // ========== CARDS ==========
 // tier: gold/special/icon/silver  stats: pace,shot,pass,dribble,def,phys
 const CARDS=[
-  {id:1,n:'Мбаппе',r:97,pos:'НАП',team:'Реал Мадрид',country:'&#127467;&#127479;',tier:'special',pr:350,
+  {id:1,n:'Mbappe',r:97,pos:'FW',team:'Real Madrid',country:'&#127467;&#127479;',tier:'special',pr:350,
    st:[97,93,82,95,36,78],skin:'#d4a574',hair:'#1a1a1a',jc1:'#fff',jc2:'#febe10'},
-  {id:2,n:'Холанд',r:96,pos:'НАП',team:'Ман Сити',country:'&#127475;&#127476;',tier:'gold',pr:320,
+  {id:2,n:'Haaland',r:96,pos:'FW',team:'Man City',country:'&#127475;&#127476;',tier:'gold',pr:320,
    st:[89,96,65,80,45,90],skin:'#f5c6a0',hair:'#DAA520',jc1:'#6cabdd',jc2:'#fff'},
-  {id:3,n:'Винисиус',r:95,pos:'ЛН',team:'Реал Мадрид',country:'&#127463;&#127479;',tier:'gold',pr:300,
+  {id:3,n:'Vinicius',r:95,pos:'LW',team:'Real Madrid',country:'&#127463;&#127479;',tier:'gold',pr:300,
    st:[97,86,78,96,29,68],skin:'#8d5524',hair:'#1a1a1a',jc1:'#fff',jc2:'#febe10'},
-  {id:4,n:'Беллингем',r:93,pos:'ЦПЗ',team:'Реал Мадрид',country:'&#127988;',tier:'gold',pr:250,
+  {id:4,n:'Bellingham',r:93,pos:'CM',team:'Real Madrid',country:'&#127988;',tier:'gold',pr:250,
    st:[80,88,83,87,72,82],skin:'#c68642',hair:'#2c1810',jc1:'#fff',jc2:'#febe10'},
-  {id:5,n:'Родри',r:92,pos:'ОПЗ',team:'Ман Сити',country:'&#127466;&#127480;',tier:'gold',pr:220,
+  {id:5,n:'Rodri',r:92,pos:'CDM',team:'Man City',country:'&#127466;&#127480;',tier:'gold',pr:220,
    st:[60,74,88,80,88,86],skin:'#f5c6a0',hair:'#2c1810',jc1:'#6cabdd',jc2:'#fff'},
-  {id:6,n:'Салах',r:91,pos:'ПН',team:'Ливерпуль',country:'&#127466;&#127468;',tier:'gold',pr:200,
+  {id:6,n:'Salah',r:91,pos:'RW',team:'Liverpool',country:'&#127466;&#127468;',tier:'gold',pr:200,
    st:[90,92,82,90,42,75],skin:'#c68642',hair:'#1a1a1a',jc1:'#c8102e',jc2:'#fff'},
-  {id:7,n:'Ямал',r:90,pos:'ПН',team:'Барселона',country:'&#127466;&#127480;',tier:'special',pr:280,
+  {id:7,n:'Yamal',r:90,pos:'RW',team:'Barcelona',country:'&#127466;&#127480;',tier:'special',pr:280,
    st:[93,79,81,95,28,58],skin:'#c68642',hair:'#1a1a1a',jc1:'#a50044',jc2:'#004d98'},
-  {id:8,n:'Педри',r:89,pos:'ЦПЗ',team:'Барселона',country:'&#127466;&#127480;',tier:'silver',pr:160,
+  {id:8,n:'Pedri',r:89,pos:'CM',team:'Barcelona',country:'&#127466;&#127480;',tier:'silver',pr:160,
    st:[72,70,90,91,72,65],skin:'#f5c6a0',hair:'#2c1810',jc1:'#a50044',jc2:'#004d98'},
-  {id:9,n:'Арауxо',r:88,pos:'ЦЗ',team:'Барселона',country:'&#127482;&#127486;',tier:'silver',pr:130,
+  {id:9,n:'Araujo',r:88,pos:'CB',team:'Barcelona',country:'&#127482;&#127486;',tier:'silver',pr:130,
    st:[80,50,52,55,90,87],skin:'#8d5524',hair:'#1a1a1a',jc1:'#a50044',jc2:'#004d98'},
-  {id:10,n:'Доннарумма',r:90,pos:'ВРТ',team:'ПСЖ',country:'&#127470;&#127481;',tier:'silver',pr:170,
+  {id:10,n:'Donnarumma',r:90,pos:'GK',team:'PSG',country:'&#127470;&#127481;',tier:'silver',pr:170,
    st:[50,25,55,30,60,88],skin:'#f5c6a0',hair:'#2c1810',jc1:'#004170',jc2:'#c8102e'},
-  {id:11,n:'Месси',r:94,pos:'НАП',team:'Интер Майами',country:'&#127462;&#127479;',tier:'icon',pr:400,
+  {id:11,n:'Messi',r:94,pos:'FW',team:'Inter Miami',country:'&#127462;&#127479;',tier:'icon',pr:400,
    st:[78,90,94,96,34,65],skin:'#f5c6a0',hair:'#2c1810',jc1:'#f5a0b5',jc2:'#000'},
-  {id:12,n:'Роналду',r:91,pos:'НАП',team:'Аль-Насср',country:'&#127477;&#127481;',tier:'icon',pr:380,
+  {id:12,n:'Ronaldo',r:91,pos:'FW',team:'Al-Nassr',country:'&#127477;&#127481;',tier:'icon',pr:380,
    st:[82,94,78,86,35,80],skin:'#d4a574',hair:'#2c1810',jc1:'#fde100',jc2:'#000'},
-  {id:13,n:'Де Брёйне',r:91,pos:'ЦАП',team:'Ман Сити',country:'&#127463;&#127466;',tier:'gold',pr:200,
+  {id:13,n:'De Bruyne',r:91,pos:'CAM',team:'Man City',country:'&#127463;&#127466;',tier:'gold',pr:200,
    st:[72,86,95,88,60,74],skin:'#f5c6a0',hair:'#DAA520',jc1:'#6cabdd',jc2:'#fff'},
-  {id:14,n:'Левандовски',r:90,pos:'НАП',team:'Барселона',country:'&#127477;&#127473;',tier:'gold',pr:190,
+  {id:14,n:'Lewandowski',r:90,pos:'FW',team:'Barcelona',country:'&#127477;&#127473;',tier:'gold',pr:190,
    st:[72,94,78,86,44,84],skin:'#f5c6a0',hair:'#2c1810',jc1:'#a50044',jc2:'#004d98'},
-  {id:15,n:'Куртуа',r:90,pos:'ВРТ',team:'Реал Мадрид',country:'&#127463;&#127466;',tier:'silver',pr:150,
+  {id:15,n:'Courtois',r:90,pos:'GK',team:'Real Madrid',country:'&#127463;&#127466;',tier:'silver',pr:150,
    st:[48,20,48,25,58,90],skin:'#f5c6a0',hair:'#2c1810',jc1:'#000',jc2:'#febe10'},
-  {id:16,n:'Ким Мин Джэ',r:87,pos:'ЦЗ',team:'Бавария',country:'&#127472;&#127479;',tier:'silver',pr:110,
+  {id:16,n:'Kim Min-jae',r:87,pos:'CB',team:'Bayern',country:'&#127472;&#127479;',tier:'silver',pr:110,
    st:[74,45,55,52,90,85],skin:'#f5c6a0',hair:'#1a1a1a',jc1:'#dc052d',jc2:'#fff'},
-  {id:17,n:'Сака',r:89,pos:'ПН',team:'Арсенал',country:'&#127988;',tier:'gold',pr:180,
+  {id:17,n:'Saka',r:89,pos:'RW',team:'Arsenal',country:'&#127988;',tier:'gold',pr:180,
    st:[88,82,82,91,55,68],skin:'#8d5524',hair:'#1a1a1a',jc1:'#ef0107',jc2:'#fff'},
-  {id:18,n:'Нойер',r:88,pos:'ВРТ',team:'Бавария',country:'&#127465;&#127466;',tier:'icon',pr:200,
+  {id:18,n:'Neuer',r:88,pos:'GK',team:'Bayern',country:'&#127465;&#127466;',tier:'icon',pr:200,
    st:[42,18,55,30,55,88],skin:'#f5c6a0',hair:'#DAA520',jc1:'#00cc44',jc2:'#000'},
-  {id:19,n:'Неймар',r:87,pos:'НАП',team:'Аль-Хилаль',country:'&#127463;&#127479;',tier:'icon',pr:250,
+  {id:19,n:'Neymar',r:87,pos:'FW',team:'Al-Hilal',country:'&#127463;&#127479;',tier:'icon',pr:250,
    st:[84,84,86,94,30,58],skin:'#c68642',hair:'#1a1a1a',jc1:'#003da5',jc2:'#fff'},
-  {id:20,n:'Хакими',r:87,pos:'ПЗ',team:'ПСЖ',country:'&#127474;&#127462;',tier:'silver',pr:120,
+  {id:20,n:'Hakimi',r:87,pos:'RB',team:'PSG',country:'&#127474;&#127462;',tier:'silver',pr:120,
    st:[93,68,76,82,78,74],skin:'#c68642',hair:'#1a1a1a',jc1:'#004170',jc2:'#c8102e'},
 ];
 
@@ -500,7 +510,7 @@ function renderTeams(){
     });
   });
 }
-function startMatch(){if(G.selTeam===null){notify('Выбери команду!');return;}go('gameScreen');}
+function startMatch(){if(G.selTeam===null){notify('Choose a team!');return;}go('gameScreen');}
 
 // ========== CARD RENDERING (FIFA-style) ==========
 const TIER_COLORS={
@@ -591,7 +601,7 @@ function drawFullCard(canvas){
   g.shadowBlur=0;
 
   // === STATS (2 rows x 3) ===
-  const stLabels=['СКР','УДР','ПАС','ДРБ','ЗАЩ','ФИЗ'];
+  const stLabels=['PAC','SHO','PAS','DRI','DEF','PHY'];
   const sy=divY+W*.15;
   const sw=W/3;
   g.textAlign='center';
@@ -612,7 +622,7 @@ function drawFullCard(canvas){
     const prY=H-W*.08;
     g.fillStyle=owned?'rgba(100,255,100,0.8)':'rgba(255,215,0,0.9)';
     g.font=`900 ${W*.07}px Arial`;g.textAlign='center';
-    g.fillText(owned?'ЕСТЬ':c.pr+' монет',W/2,prY);
+    g.fillText(owned?'OWNED':c.pr+' coins',W/2,prY);
   }
 
   // === TIER BADGE ===
@@ -622,7 +632,7 @@ function drawFullCard(canvas){
 }
 
 function drawCardFigure(g,px,py,s,c){
-  const sk=c.skin,hr=c.hair,j1=c.jc1,j2=c.jc2,isGK=c.pos==='ВРТ';
+  const sk=c.skin,hr=c.hair,j1=c.jc1,j2=c.jc2,isGK=c.pos==='GK';
   // Legs
   g.fillStyle='#222';
   g.fillRect(px-6*s,py+18*s,5*s,14*s);g.fillRect(px+1*s,py+18*s,5*s,14*s);
@@ -734,11 +744,11 @@ function openCardModal(card,fromShop){
   const buyBtn=document.getElementById('cmBuy');
   if(fromShop&&!owned){
     buyBtn.style.display='block';
-    buyBtn.textContent='КУПИТЬ за '+card.pr+' монет';
+    buyBtn.textContent='BUY for '+card.pr+' coins';
     buyBtn.onclick=()=>{
-      if(G.coins<card.pr){notify('Не хватает монет!');return;}
+      if(G.coins<card.pr){notify('Not enough coins!');return;}
       G.coins-=card.pr;G.cards.push(card.id);save();
-      notify(card.n+' в коллекции!');uc();
+      notify(card.n+' added to collection!');uc();
       closeCardModal();
       renderShop();
     };
@@ -796,7 +806,7 @@ function drawBigCard(canvas,c,owned){
   g.fillText(c.n,W/2,divY+28);g.shadowBlur=0;
 
   // Stats
-  const stL=['СКР','УДР','ПАС','ДРБ','ЗАЩ','ФИЗ'];
+  const stL=['PAC','SHO','PAS','DRI','DEF','PHY'];
   const sy=divY+42;const sw=W/3;
   g.textAlign='center';
   for(let i=0;i<6;i++){
@@ -836,7 +846,7 @@ function renderShop(){
 }
 function renderColl(){
   const g=document.getElementById('cG');document.getElementById('cN').textContent=G.cards.length;g.innerHTML='';
-  if(!G.cards.length){g.innerHTML='<div style="color:#8ab4f8;grid-column:1/-1;text-align:center;padding:24px">Купи карточки в магазине!</div>';return;}
+  if(!G.cards.length){g.innerHTML='<div style="color:#8ab4f8;grid-column:1/-1;text-align:center;padding:24px">Buy cards in the shop!</div>';return;}
   G.cards.forEach(id=>{const c=CARDS.find(x=>x.id===id);if(!c)return;
     const d=makeCard(c,false,false);
     d.onclick=()=>openCardModal(c,false);
@@ -854,7 +864,7 @@ let subsLeft=3; // 3 substitutions allowed
 let subSelecting=null; // 'pickField' or 'pickBench'
 let subFieldPlayer=null;
 const PR=13,BR=6,GH_HALF=50,GW=8;
-const ROLE_NAMES={GK:'Вратарь',DF:'Защитник',MF:'Полузащитник',FW:'Нападающий',SUB:'Запасной'};
+const ROLE_NAMES={GK:'Goalkeeper',DF:'Defender',MF:'Midfielder',FW:'Forward',SUB:'Substitute'};
 
 // Fans
 let fans=[];
@@ -896,9 +906,11 @@ function resolveKitClash(myTeam,oppTeam){
 
 function initGame(){
   if(G.selTeam===null)G.selTeam=0;
-  // Pick random opponent from same league or random
-  const sameLg=TEAMS.filter((t,i)=>i!==G.selTeam);
-  G.oppIdx=TEAMS.indexOf(sameLg[Math.floor(Math.random()*sameLg.length)]);
+  // Pick random opponent from same league
+  const myLg=TEAMS[G.selTeam].lg;
+  const sameLg=TEAMS.map((t,i)=>({t,i})).filter(({t,i})=>i!==G.selTeam&&t.lg===myLg);
+  if(sameLg.length>0) G.oppIdx=sameLg[Math.floor(Math.random()*sameLg.length)].i;
+  else { const all=TEAMS.map((t,i)=>({t,i})).filter(({i})=>i!==G.selTeam); G.oppIdx=all[Math.floor(Math.random()*all.length)].i; }
   // Resolve kit clash
   const awayKit=resolveKitClash(TEAMS[G.selTeam],TEAMS[G.oppIdx]);
   G.awayKit=awayKit;
@@ -942,17 +954,17 @@ function initGame(){
       if(totalMin>=45&&!halfTimeDone){
         halfTimeDone=true;
         G.time=45*60;
-        commentary('ПЕРЕРЫВ! Конец первого тайма! Счёт '+G.sc[0]+':'+G.sc[1]);
-        speak('Перерыв! Счёт '+G.sc[0]+' '+G.sc[1]);
+        commentary('HALF TIME! End of the first half! Score '+G.sc[0]+':'+G.sc[1]);
+        speak('Half time! Score '+G.sc[0]+' '+G.sc[1]);
         G.on=false;
-        document.getElementById('clock').textContent='ПТ';
+        document.getElementById('clock').textContent='HT';
         setTimeout(()=>{
           G.on=true;
           if(raf)cancelAnimationFrame(raf);
           tick();
           resetPos();
-          commentary('Второй тайм начинается!');
-          speak('Начинаем второй тайм!');
+          commentary('Second half begins!');
+          speak('The second half is underway!');
         },4000);
         return;
       }
@@ -980,7 +992,7 @@ function showLineup(){
   const mt=TEAMS[G.selTeam],ot=TEAMS[G.oppIdx];
   document.getElementById('luVs').textContent=mt.n+' vs '+ot.n;
 
-  const roles={GK:'ВРТ',DF:'ЗАЩ',MF:'ПЗ',FW:'НАП'};
+  const roles={GK:'GK',DF:'DEF',MF:'MID',FW:'FWD'};
 
   function renderTeamList(players,container,teamColor,teamName){
     container.innerHTML=`<div class="lu-tname" style="background:${teamColor};color:#fff">${teamName}</div>`;
@@ -998,7 +1010,7 @@ function showLineup(){
 
   // Voice announcement
   initAudio();
-  const announcement=`Матч: ${mt.n} против ${ot.n}. Составы объявлены! Судья даёт свисток!`;
+  const announcement=`Match: ${mt.n} versus ${ot.n}. Lineups announced! The referee blows the whistle!`;
   setTimeout(()=>speak(announcement),500);
 }
 
@@ -1041,29 +1053,37 @@ function genFans(){
   }
 }
 
-// Real squad names per team (index matches TEAMS array)
+// Real squad names per team
 const SQUADS={
-  'Россия':['Сафонов','Караваев','Джикия','Дивеев','Кудряшов','Зобнин','Баринов','Миранчук','Головин','Чалов','Дзюба','Шунин','Кузяев','Ионов','Захарян','Мостовой'],
-  'Бразилия':['Алиссон','Данило','Маркиньос','Тиагу Силва','Алекс Сандро','Каземиро','Пакета','Неймар','Рафинья','Ришарлисон','Винисиус','Эдерсон','Фред','Антони','Мартинелли','Родриго'],
-  'Аргентина':['Э. Мартинес','Молина','Ромеро','Отаменди','Акунья','Де Пауль','Э. Фернандес','Мак Аллистер','Ди Мария','Месси','Альварес','Руйи','Парадес','Ло Чельсо','Гонсалес','Лаутаро'],
-  'Франция':['Майньян','Конде','Упамекано','Салиба','Т. Эрнандес','Чуамени','Рабьо','Гризманн','Дембеле','Мбаппе','Тюрам','Ллорис','Камавинга','Коман','Жиру','Мюллер'],
-  'Германия':['Нойер','Кимич','Рюдигер','Зюле','Раум','Горетцка','Гюндоган','Мусиала','Сане','Хаверц','Фюллькруг','тер Штеген','Шлоттербек','Брандт','Вернер','Гнабри'],
-  'Испания':['Симон','Карвахаль','Ле Норман','Лапорт','Кукурелья','Родри','Педри','Гави','Ямал','Мората','Н. Вильямс','Ремиро','Начо','Ольмо','Ферран','Хоселу'],
-  'Англия':['Пикфорд','Уокер','Стоунз','Магуайр','Шоу','Райс','Беллингем','Сака','Фоден','Кейн','Рашфорд','Рамсдейл','Чилуэлл','Маунт','Грилиш','Стерлинг'],
-  'Италия':['Доннарумма','Ди Лоренцо','Бонуччи','Бастони','Диманко','Бареллла','Жоржиньо','Кьеза','Пеллегрини','Иммобиле','Инсинье','Мере','Скамакка','Расладори','Тонали','Локателли'],
-  'Португалия':['Кошта','Канселу','Дьаш','Пепе','Н. Мендеш','Б. Фернандеш','Витинья','Б. Силва','Р. Леан','Роналду','Жота','Рамуш','Палинья','Ф. Силва','Гонсалвеш','Феликс'],
-  'Ман Сити':['Эдерсон','Уокер','Диаш','Аканджи','Грилиш','Родри','Де Брёйне','Б. Силва','Фоден','Холанд','Доку','Ортега','Стоунз','Альварес','Ковачич','Нуньес'],
-  'Арсенал':['Райя','Уайт','Салиба','Габриэл','Зинченко','Райс','Эдегор','Сака','Хавертц','Мартинелли','Трособи','Рамсдейл','Тимбер','Жоржиньо','Нкетия','Нельсон'],
-  'Ливерпуль':['Алиссон','Александр-Арнолд','Конате','Ван Дейк','Робертсон','Мак Аллистер','Собослай','Салах','Жота','Нуньес','Диаш','Келлехер','Гакпо','Эллиотт','Джонс','Цимикас'],
-  'Реал Мадрид':['Куртуа','Карвахаль','Милитао','Рюдигер','Менди','Чуамени','Кроос','Беллингем','Родриго','Винисиус','Мбаппе','Лунин','Алаба','Камавинга','Валверде','Хоселу'],
-  'Барселона':['тер Штеген','Канселу','Араухо','Кунде','Балде','Педри','Де Йонг','Гави','Рафинья','Левандовски','Ямал','Пенья','Кристенсен','Ольмо','Ферран','Феликс'],
-  'ПСЖ':['Доннарумма','Хакими','Маркиньос','Шкриниар','Н. Мендеш','Витинья','Фабиан','Заир-Эмери','Дембеле','Мбаппе','Колу-Муани','Наваш','Рамос','Угарте','Ли Кан Ин','Барколя'],
-  'Бавария':['Нойер','Кимич','Упамекано','Ким Мин Джэ','Дэвис','Горетцка','Мусиала','Сане','Мюллер','Кейн','Гнабри','Ульрайх','Мазрауи','Лаймер','Чупо-Мотинг','Тел'],
-  'Интер':['Зоммер','Дармиан','Ачерби','Бастони','Думфрис','Бареллла','Чалханоглу','Мхитарян','Диманко','Лаутаро','Тюрам','Ди Дженнаро','Павар','Фраттези','Джеко','Санчес'],
-  'Ювентус':['Щесный','Данило','Бремер','Ганти','Камбьязо','Локателли','Рабьо','Кьеза','Влахович','Илич','Костич','Перин','Ругани','Погба','Мирети','Вис'],
+  'Russia':['Safonov','Karavaev','Dzhikiya','Diveev','Kudryashov','Zobnin','Barinov','Miranchuk','Golovin','Chalov','Dzyuba','Shunin','Kuzyaev','Ionov','Zakharyan','Mostovoy'],
+  'Brazil':['Alisson','Danilo','Marquinhos','T. Silva','Alex Sandro','Casemiro','Paqueta','Neymar','Raphinha','Richarlison','Vinicius','Ederson','Fred','Antony','Martinelli','Rodrygo'],
+  'Argentina':['E. Martinez','Molina','Romero','Otamendi','Acuna','De Paul','E. Fernandez','Mac Allister','Di Maria','Messi','Alvarez','Rulli','Paredes','Lo Celso','Gonzalez','Lautaro'],
+  'France':['Maignan','Kounde','Upamecano','Saliba','T. Hernandez','Tchouameni','Rabiot','Griezmann','Dembele','Mbappe','Thuram','Lloris','Camavinga','Coman','Giroud','Muller'],
+  'Germany':['Neuer','Kimmich','Rudiger','Sule','Raum','Goretzka','Gundogan','Musiala','Sane','Havertz','Fullkrug','ter Stegen','Schlotterbeck','Brandt','Werner','Gnabry'],
+  'Spain':['Simon','Carvajal','Le Normand','Laporte','Cucurella','Rodri','Pedri','Gavi','Yamal','Morata','N. Williams','Remiro','Nacho','Olmo','Ferran','Joselu'],
+  'England':['Pickford','Walker','Stones','Maguire','Shaw','Rice','Bellingham','Saka','Foden','Kane','Rashford','Ramsdale','Chilwell','Mount','Grealish','Sterling'],
+  'Italy':['Donnarumma','Di Lorenzo','Bonucci','Bastoni','Dimarco','Barella','Jorginho','Chiesa','Pellegrini','Immobile','Insigne','Meret','Scamacca','Raspadori','Tonali','Locatelli'],
+  'Portugal':['Costa','Cancelo','Dias','Pepe','N. Mendes','B. Fernandes','Vitinha','B. Silva','R. Leao','Ronaldo','Jota','Ramos','Palhinha','F. Silva','Goncalves','Felix'],
+  'Man City':['Ederson','Walker','Dias','Akanji','Grealish','Rodri','De Bruyne','B. Silva','Foden','Haaland','Doku','Ortega','Stones','Alvarez','Kovacic','Nunes'],
+  'Arsenal':['Raya','White','Saliba','Gabriel','Zinchenko','Rice','Odegaard','Saka','Havertz','Martinelli','Trossard','Ramsdale','Timber','Jorginho','Nketiah','Nelson'],
+  'Liverpool':['Alisson','Alexander-Arnold','Konate','Van Dijk','Robertson','Mac Allister','Szoboszlai','Salah','Jota','Nunez','Diaz','Kelleher','Gakpo','Elliott','Jones','Tsimikas'],
+  'Real Madrid':['Courtois','Carvajal','Militao','Rudiger','Mendy','Tchouameni','Kroos','Bellingham','Rodrygo','Vinicius','Mbappe','Lunin','Alaba','Camavinga','Valverde','Joselu'],
+  'Barcelona':['ter Stegen','Cancelo','Araujo','Kounde','Balde','Pedri','De Jong','Gavi','Raphinha','Lewandowski','Yamal','Pena','Christensen','Olmo','Ferran','Felix'],
+  'PSG':['Donnarumma','Hakimi','Marquinhos','Skriniar','N. Mendes','Vitinha','Fabian','Zaïre-Emery','Dembele','Mbappe','Kolo Muani','Navas','Ramos','Ugarte','Lee Kang-in','Barcola'],
+  'Bayern':['Neuer','Kimmich','Upamecano','Kim Min-jae','Davies','Goretzka','Musiala','Sane','Muller','Kane','Gnabry','Ulreich','Mazraoui','Laimer','Choupo-Moting','Tel'],
+  'Inter':['Sommer','Darmian','Acerbi','Bastoni','Dumfries','Barella','Calhanoglu','Mkhitaryan','Dimarco','Lautaro','Thuram','Di Gennaro','Pavard','Frattesi','Dzeko','Sanchez'],
+  'Juventus':['Szczesny','Danilo','Bremer','Gatti','Cambiaso','Locatelli','Rabiot','Chiesa','Vlahovic','Ilic','Kostic','Perin','Rugani','Pogba','Miretti','Weah'],
+  'Zenit':['Kerzhakov','Chistyakov','Lovren','Rodrigao','Douglas Santos','Barrios','Wendel','Claudinho','Malcom','Mostovoy','Sergeev','Vashutin','Sutormin','Kuznetsov','Mantuan','Karavaev'],
+  'Spartak':['Maksimenko','Dzhikiya','Gigot','Tavares','Rasskazov','Zobnin','Litvinov','Promes','Ignatov','Sobolev','Bakaev','Selikhov','Denisov','Martins','Moses','Umbaro'],
+  'CSKA':['Akinfeev','Diveev','Magnusson','Medina','Oblyakov','Mukhin','Zabolotny','Chalov','Carrascal','Zamaletdinov','Medvedev','Torop','Khosonov','Bohinen','Ermakov','Fyodorov'],
+  'Dynamo':['Shunin','Varela','Ordets','Grulev','Tyukavin','Fomin','Makarov','Zakharyan','Ngamale','Smolov','Laxalt','Leschuk','Skopintsev','Kutitsky','Lesovoy','Chalov'],
+  'Lokomotiv':['Guilherme','Nenakhov','Barinov','Magkeev','Zhemaletdinov','Kamano','Rybchinskiy','Beka Beka','Kerzhakov','Miranchuk','Dzyuba','Babkin','Savin','Petrov','Silyanov','Kononov'],
+  'Krasnodar':['Safonov','Petrov','Alonso','Spajic','Volkov','Olsson','Spertsyan','Ionov','Batyrshyn','Cordoba','Ramazanov','Gorodov','Chernikov','Lednev','Ahmetov','Klasson'],
+  'Rostov':['Pesyakov','Osipenko','Gigovic','Terentyev','Bayramyan','Glebov','Komlichenko','Langovich','Poloz','Chidera','Sazonov','Meshchaninov','Sukhomlinov','Almqvist','Falkoner','Bakkali'],
+  'Akhmat':['Shelia','Tiknizyan','Semenov','Anjorin','Ilyin','Karpov','Troshechkin','Alisultanov','Agalarov','Kotin','Bykov','Gurban','Yangel','Beriashvili','Utsiev','Konovalov'],
 };
 // Fallback for teams without squads
-const FALLBACK_NAMES=['Гарсия','Мартинес','Лопес','Сильва','Фернандес','Родригес','Мюллер','Шмидт','Тейлор','Браун','Джонс','Вильямс','Андерсон','Томас','Дэвис','Уилсон'];
+const FALLBACK_NAMES=['Garcia','Martinez','Lopez','Silva','Fernandez','Rodriguez','Muller','Schmidt','Taylor','Brown','Jones','Williams','Anderson','Thomas','Davies','Wilson'];
 
 function getSquad(teamIdx){
   const name=TEAMS[teamIdx].n;
@@ -1124,8 +1144,8 @@ function relBall(){if(ball.owner)ball.owner.hb=false;ball.owner=null;ball.free=t
 
 // ========== SUBSTITUTIONS ==========
 function openSubPanel(){
-  if(subsLeft<=0){commentary('Замены закончились!');return;}
-  if(myBench.length===0){commentary('Скамейка пуста!');return;}
+  if(subsLeft<=0){commentary('No substitutions left!');return;}
+  if(myBench.length===0){commentary('Bench is empty!');return;}
   subSelecting='pickField';subFieldPlayer=null;
   renderSubPanel();
   document.getElementById('subPanel').classList.add('show');
@@ -1145,14 +1165,14 @@ function renderSubPanel(){
     const row=document.createElement('div');
     row.className='sub-row on-field';
     const eColor=p.energy>60?'#4caf50':p.energy>30?'#ff9800':'#f44336';
-    row.innerHTML=`<div class="sr-num">${p.num}</div><div class="sr-info"><div class="sr-name">${ROLE_NAMES[p.role]} #${p.num}</div><div class="sr-role">${p.role}${p===ctrl?' (управляешь)':''}</div><div class="sr-energy"><div class="sr-energy-fill" style="width:${p.energy}%;background:${eColor}"></div></div></div>`;
+    row.innerHTML=`<div class="sr-num">${p.num}</div><div class="sr-info"><div class="sr-name">${ROLE_NAMES[p.role]} #${p.num}</div><div class="sr-role">${p.role}${p===ctrl?' (controlled)':''}</div><div class="sr-energy"><div class="sr-energy-fill" style="width:${p.energy}%;background:${eColor}"></div></div></div>`;
     row.onclick=()=>{
       subFieldPlayer=i;
       subSelecting='pickBench';
       // Highlight
       fieldDiv.querySelectorAll('.sub-row').forEach(r=>r.style.border='none');
       row.style.border='2px solid #ffd700';
-      commentary('Теперь выбери запасного!');
+      commentary('Now pick a substitute!');
     };
     fieldDiv.appendChild(row);
   });
@@ -1161,9 +1181,9 @@ function renderSubPanel(){
   myBench.forEach((p,i)=>{
     const row=document.createElement('div');
     row.className='sub-row on-bench';
-    row.innerHTML=`<div class="sr-num">${p.num}</div><div class="sr-info"><div class="sr-name">${ROLE_NAMES[p.role]} #${p.num}</div><div class="sr-role">${p.role} — Запасной</div><div class="sr-energy"><div class="sr-energy-fill" style="width:${p.energy}%;background:#ffd700"></div></div></div>`;
+    row.innerHTML=`<div class="sr-num">${p.num}</div><div class="sr-info"><div class="sr-name">${ROLE_NAMES[p.role]} #${p.num}</div><div class="sr-role">${p.role} — Bench</div><div class="sr-energy"><div class="sr-energy-fill" style="width:${p.energy}%;background:#ffd700"></div></div></div>`;
     row.onclick=()=>{
-      if(subFieldPlayer===null){commentary('Сначала выбери кого менять!');return;}
+      if(subFieldPlayer===null){commentary('First pick who to replace!');return;}
       doSubstitution(subFieldPlayer,i);
     };
     benchDiv.appendChild(row);
@@ -1191,7 +1211,7 @@ function doSubstitution(fieldIdx,benchIdx){
 
   my[fieldIdx]=newP;
   subsLeft--;
-  commentary(`Замена! #${benchP.num} выходит на поле! Осталось ${subsLeft} замены`);
+  commentary(`Substitution! #${benchP.num} comes on! ${subsLeft} subs remaining`);
   closeSubPanel();
 }
 
@@ -1226,10 +1246,30 @@ function setupJoy(){
 function setupAct(){
   document.querySelectorAll('.ab').forEach(b=>{
     const a=b.dataset.a;
-    b.addEventListener('touchstart',e=>{e.preventDefault();doAct(a);b.classList.add('pr');},{passive:false});
-    b.addEventListener('touchend',()=>{b.classList.remove('pr');if(a==='sprint')sprint=false;},{passive:false});
-    b.addEventListener('mousedown',()=>{doAct(a);b.classList.add('pr');});
-    b.addEventListener('mouseup',()=>{b.classList.remove('pr');if(a==='sprint')sprint=false;});
+    b.addEventListener('touchstart',e=>{
+      e.preventDefault();b.classList.add('pr');
+      if(a==='shoot')doAct(a); // doAct starts charge or handles penalties
+      else doAct(a);
+    },{passive:false});
+    b.addEventListener('touchend',()=>{
+      b.classList.remove('pr');
+      if(a==='sprint')sprint=false;
+      if(a==='shoot')releaseShoot();
+    },{passive:false});
+    b.addEventListener('touchcancel',()=>{
+      b.classList.remove('pr');
+      if(a==='shoot')cancelShootCharge();
+    },{passive:false});
+    b.addEventListener('mousedown',()=>{
+      b.classList.add('pr');
+      if(a==='shoot')doAct(a);
+      else doAct(a);
+    });
+    b.addEventListener('mouseup',()=>{
+      b.classList.remove('pr');
+      if(a==='sprint')sprint=false;
+      if(a==='shoot')releaseShoot();
+    });
   });
 }
 
@@ -1237,12 +1277,17 @@ function setupAct(){
 const kd={};
 window.addEventListener('keydown',e=>{
   const k=e.key.toLowerCase();kd[k]=true;
-  if(k===' ')doAct('shoot');if(k==='q')doAct('pass');if(k==='e')doAct('tackle');
+  if(k===' ')doAct('shoot'); // starts charge
+  if(k==='q')doAct('pass');if(k==='e')doAct('tackle');
   if(k==='r')doAct('skill');if(k==='f')doAct('rainbow');if(k==='shift')sprint=true;
   if(k==='tab'){e.preventDefault();switchPlayer();}
   if(k==='escape')togglePause();
 });
-window.addEventListener('keyup',e=>{const k=e.key.toLowerCase();kd[k]=false;if(k==='shift')sprint=false;});
+window.addEventListener('keyup',e=>{
+  const k=e.key.toLowerCase();kd[k]=false;
+  if(k==='shift')sprint=false;
+  if(k===' ')releaseShoot(); // fire on release
+});
 
 // ========== PS5 DUALSENSE GAMEPAD ==========
 // Standard mapping (DualSense):
@@ -1256,22 +1301,59 @@ let gpPrevButtons=[];
 
 window.addEventListener('gamepadconnected',e=>{
   gpConnected=true;
-  notify('Геймпад подключён: '+e.gamepad.id.substring(0,30));
-  commentary('Геймпад PS5 подключён!');
+  notify('Gamepad connected: '+e.gamepad.id.substring(0,30));
+  commentary('PS5 gamepad connected!');
 });
 window.addEventListener('gamepaddisconnected',()=>{
   gpConnected=false;
-  notify('Геймпад отключён');
+  gpPrevButtons=[];
+  notify('Gamepad disconnected');
 });
 
-function pollGamepad(){
-  if(!gpConnected||!G.on)return;
+function getGamepad(){
+  if(!navigator.getGamepads)return null;
   const gamepads=navigator.getGamepads();
-  let gp=null;
   for(let i=0;i<gamepads.length;i++){
-    if(gamepads[i]){gp=gamepads[i];break;}
+    if(gamepads[i]&&gamepads[i].connected){
+      // Auto-detect gamepad even without gamepadconnected event
+      if(!gpConnected){
+        gpConnected=true;
+        notify('Gamepad connected: '+gamepads[i].id.substring(0,30));
+      }
+      return gamepads[i];
+    }
   }
+  return null;
+}
+
+function pollGamepad(){
+  const gp=getGamepad();
   if(!gp)return;
+
+  const b=gp.buttons;
+  const pressed=(i)=>b[i]&&b[i].pressed;
+  const justPressed=(i)=>pressed(i)&&!(gpPrevButtons[i]);
+
+  // If game is not active, handle penalties or menu navigation
+  if(!G.on){
+    if(justPressed(0)){
+      // During penalties — shoot
+      if(penState&&!penState.done&&!penState.waiting){
+        penShoot();
+      } else {
+        // Menu navigation — click primary button
+        const active=document.querySelector('.screen.active');
+        if(active){
+          const btn=active.querySelector('.sel')||active.querySelector('button')||active.querySelector('[onclick]');
+          if(btn)btn.click();
+        }
+      }
+    }
+    // Save previous button states
+    gpPrevButtons=[];
+    for(let i=0;i<b.length;i++)gpPrevButtons[i]=pressed(i);
+    return;
+  }
 
   // Left stick — movement
   const deadzone=0.15;
@@ -1286,13 +1368,10 @@ function pollGamepad(){
     if(!touchActive){jd={x:0,y:0};}
   }
 
-  // Buttons (detect press, not hold, except sprint)
-  const b=gp.buttons;
-  const pressed=(i)=>b[i]&&b[i].pressed;
-  const justPressed=(i)=>pressed(i)&&!(gpPrevButtons[i]);
-
-  // Cross (X) = Shoot
-  if(justPressed(0))doAct('shoot');
+  // Buttons
+  // Cross (X) = Shoot (hold to charge, release to fire)
+  if(justPressed(0))doAct('shoot'); // starts charge
+  if(!pressed(0)&&gpPrevButtons[0])releaseShoot(); // released — fire
   // Circle (O) = Pass
   if(justPressed(1))doAct('pass');
   // Square = Tackle
@@ -1318,20 +1397,78 @@ function pollGamepad(){
   if(pressed(14))jd.x=-1; // Left
   if(pressed(15))jd.x=1;  // Right
 
-  // Options = pause/menu (could be used later)
-  // Touchpad (17) = toggle camera maybe later
-
   // Save previous button states
   gpPrevButtons=[];
   for(let i=0;i<b.length;i++)gpPrevButtons[i]=pressed(i);
 }
 
+// Poll gamepad even outside game (menus, team select, etc.)
+setInterval(()=>{if(!G.on)pollGamepad();},100);
+
+// ========== SHOT POWER CHARGE ==========
+let shootChargeStart=0;
+const SHOOT_CHARGE_MAX=1200; // ms to full power
+const SHOOT_POWER_MIN=8;
+const SHOOT_POWER_MAX=18;
+
+function startShootCharge(){
+  if(shootChargeStart)return; // already charging
+  if(!ctrl||!ctrl.hb)return;
+  shootChargeStart=Date.now();
+  const bar=document.getElementById('pwrBar');
+  if(bar)bar.classList.add('show');
+}
+
+function getShootPower(){
+  if(!shootChargeStart)return 0;
+  const elapsed=Date.now()-shootChargeStart;
+  return Math.min(1,elapsed/SHOOT_CHARGE_MAX);
+}
+
+function updatePowerBar(){
+  if(!shootChargeStart)return;
+  const pwr=getShootPower();
+  const fill=document.getElementById('pwrFill');
+  if(fill){
+    fill.style.width=(pwr*100)+'%';
+    // Color: green → yellow → red
+    if(pwr<0.4)fill.style.background='#4caf50';
+    else if(pwr<0.75)fill.style.background='#ffc107';
+    else fill.style.background='#f44336';
+  }
+}
+
+function releaseShoot(){
+  if(!shootChargeStart)return;
+  const pwr=getShootPower();
+  shootChargeStart=0;
+  const bar=document.getElementById('pwrBar');
+  if(bar)bar.classList.remove('show');
+  const fill=document.getElementById('pwrFill');
+  if(fill)fill.style.width='0%';
+  doShoot(pwr);
+  setCD('shoot',800);
+}
+
+function cancelShootCharge(){
+  shootChargeStart=0;
+  const bar=document.getElementById('pwrBar');
+  if(bar)bar.classList.remove('show');
+  const fill=document.getElementById('pwrFill');
+  if(fill)fill.style.width='0%';
+}
+
 // ========== ACTIONS ==========
 function doAct(a){
-  if(!G.on)return;if(cds[a])return;
+  // Allow shoot during penalties even when G.on is false
+  if(!G.on){
+    if(a==='shoot'&&penState&&!penState.done&&!penState.waiting){penShoot();}
+    return;
+  }
+  if(cds[a])return;
   switch(a){
     case 'pass':doPass();setCD(a,400);break;
-    case 'shoot':doShoot();setCD(a,800);break;
+    case 'shoot':startShootCharge();break; // charge starts on press, release fires
     case 'sprint':sprint=true;break;
     case 'tackle':doTackle();setCD(a,600);break;
     case 'skill':doSkill();setCD(a,1800);break;
@@ -1351,41 +1488,49 @@ function doPass(){
   const dx=best.x-ball.x,dy=best.y-ball.y,d=Math.sqrt(dx*dx+dy*dy);
   ball.vx=(dx/d)*4;ball.vy=(dy/d)*4;ball.target=best;
   ctrl.anim='pass';ctrl.animT=20;
-  commentary(ctrl.name+' отдаёт на '+best.name+'! '+pick(['Хороший пас!','Точная передача!','Разыгрывают!','Комбинация!']));
+  // Only comment on notable passes (long or forward)
+  const passDist=dd(ctrl,best);
+  if(passDist>120) commentary(ctrl.name+' passes to '+best.name+'! '+pickNoRepeat(COMMENTS.pass));
 }
 
-function doShoot(){
+function doShoot(chargePwr){
   // Penalty shoot
-  if(penState&&!penState.done&&penState.turn==='my'){penShoot();return;}
+  if(penState&&!penState.done&&!penState.waiting){penShoot();return;}
   if(!ctrl||!ctrl.hb)return;
   relBall();
 
-  // Realistic shot — accuracy depends on distance and angle
+  // Power from charge (0=tap, 1=full charge)
+  const pwr=typeof chargePwr==='number'?chargePwr:0.3;
+
+  // Realistic shot — accuracy depends on distance, power affects speed & arc
   const distToGoal=W-ball.x;
   const distFactor=Math.min(1, distToGoal/(W*0.5)); // 0=close, 1=far
 
-  // Spread increases with distance
-  const spread=GH_HALF*(0.3+distFactor*1.2); // close=30%, far=150% of goal
+  // Strong shots are less accurate
+  const accuracyPenalty=pwr>0.8?0.3:0;
+  const spread=GH_HALF*(0.2+distFactor*1.0+accuracyPenalty);
   const gy=H/2+(Math.random()-.5)*spread;
 
-  // Sometimes miss completely (more likely from far)
-  const missChance=0.1+distFactor*0.3; // 10% close, 40% far
+  // Miss chance: higher from far, slightly higher for max power
+  const missChance=0.08+distFactor*0.25+(pwr>0.9?0.1:0);
   let gx=W-1;
   if(Math.random()<missChance){
-    // Miss — ball goes wide or high
-    gx=W+10; // flies past
-    commentary(ctrl.name+' бьёт! '+pick(['Мимо!','Выше ворот!','Мяч ушёл в аут!','Неточно!']));
+    gx=W+10;
+    if(pwr>0.7) commentary(ctrl.name+' '+pickNoRepeat(['fires a rocket — wide!','thunderous strike — missed!','blasts it with everything — over!','smashes it — into the stands!']));
+    else commentary(ctrl.name+' shoots! '+pickNoRepeat(COMMENTS.shootMiss));
   } else {
-    commentary(ctrl.name+' бьёт по воротам! '+pick(['Мощный удар!','Какой удар!','Опасно!','Летит в ворота!','В створ!']));
+    if(pwr>0.7) commentary(ctrl.name+' '+pickNoRepeat(['ROCKET!','Thunderous strike!','What power!','Missile!','Cannonball toward goal!','Incredible power!']));
+    else commentary(ctrl.name+' shoots at goal! '+pickNoRepeat(COMMENTS.shoot));
   }
 
   const dx=gx-ball.x,dy=gy-ball.y,d=Math.sqrt(dx*dx+dy*dy);
-  // Power: stronger shots
-  const power=10+Math.random()*4-distFactor*2;
+  // Power scales with charge
+  const power=SHOOT_POWER_MIN+(SHOOT_POWER_MAX-SHOOT_POWER_MIN)*pwr+Math.random()*2-distFactor*2;
   ball.vx=(dx/d)*power;
   ball.vy=(dy/d)*power;
-  // Arc trajectory — ball rises then falls under gravity
-  ball.vz=3+Math.random()*3+distFactor*2; // higher arc from further out
+  // Arc: low for power shots (driven), high for weak lobs
+  const arc=pwr>0.6?(1+Math.random()*2):(3+Math.random()*3+distFactor*2);
+  ball.vz=arc;
   ball.z=0;
 
   lastShooter=ctrl.name;
@@ -1406,12 +1551,9 @@ function doTackle(){
     // If close enough — steal ball
     if(d<50&&tgt.hb){
       giveBall(ctrl);
-      commentary(ctrl.name+' отбирает мяч у '+tgt.name+'! '+pick(['Чисто!','Отличный отбор!','Мяч наш!','Класс!']));
+      commentary(ctrl.name+' wins the ball from '+tgt.name+'! '+pickNoRepeat(COMMENTS.tackle));
     } else if(d<50&&ball.free&&dd(ctrl,ball)<50) {
       giveBall(ctrl);
-      commentary(ctrl.name+' перехватывает мяч!');
-    } else {
-      commentary(ctrl.name+' идёт в подкат на '+((tgt&&tgt.name)||'соперника')+'!');
     }
   }
 }
@@ -1422,9 +1564,10 @@ function doSkill(){
   ctrl.anim='skill';ctrl.animT=30;
   let near=null,md=80;
   opp.forEach(o=>{const d=dd(ctrl,o);if(d<md){md=d;near=o;}});
-  if(near){const dx=near.x-ctrl.x,dy=near.y-ctrl.y;ctrl.vx=dy*.4;ctrl.vy=-dx*.4;}
+  if(near){const dx=near.x-ctrl.x,dy=near.y-ctrl.y;ctrl.vx=dy*.4;ctrl.vy=-dx*.4;
+    commentary(ctrl.name+' '+pickNoRepeat(COMMENTS.skill));
+  }
   else{ctrl.vx+=(ctrl.vx>0?1:-1)*4;}
-  commentary(ctrl.name+' '+pick(['делает финт!','обыгрывает!','какая техника!','красиво обводит!']));
 }
 
 function doRainbow(){
@@ -1434,7 +1577,7 @@ function doRainbow(){
   ball.rbs={x:ball.x,y:ball.y};
   ball.rbe={x:ctrl.x+130,y:ctrl.y+(Math.random()-.5)*40};
   relBall();ball.vx=0;ball.vy=0;
-  commentary(ctrl.name+' '+pick(['делает радугу!','перебрасывает через соперника!','вот это трюк!','невероятно!']));
+  commentary(ctrl.name+' '+pickNoRepeat(COMMENTS.rainbow));
 }
 
 // ========== AI ==========
@@ -1446,63 +1589,92 @@ function runAI(){
     const wander_y=Math.cos(time*.3+o.num*2.3)*25;
 
     if(o.hb){
-      // Build up play — pass more, shoot rarely
-      let tx=GW+10,ty=H/2+(Math.random()-.5)*60;
+      // Dribble toward goal, pass only when pressed, shoot when in position
+      // Target: dribble toward goal, offset by position
+      let tx=GW+10,ty=H/2+(o.by-H/2)*0.3;
 
-      // Only shoot when close to goal
-      if(o.x<W*.25&&o.role==='FW'){
-        if(Math.random()<.01){
+      // Shoot when close to goal
+      const canShoot=(o.role==='FW'&&o.x<W*.35)||(o.role==='MF'&&o.x<W*.25)||(o.role==='DF'&&o.x<W*.15);
+      const shootChance=o.role==='FW'?.03:(o.role==='MF'?.015:.005);
+      if(canShoot){
+        if(Math.random()<shootChance){
           relBall();
-          // AI also misses sometimes (40% miss)
-          const miss=Math.random()<0.4;
-          const gy=H/2+(Math.random()-.5)*GH_HALF*(miss?2:0.8);
+          const miss=Math.random()<0.22;
+          const gy=H/2+(Math.random()-.5)*GH_HALF*(miss?2.2:0.7);
           const gx=miss?-10:4;
           const dx2=gx-ball.x,dy2=gy-ball.y,d2=Math.sqrt(dx2*dx2+dy2*dy2);
-          const aiPow=8+Math.random()*4;
+          const aiPow=9+Math.random()*5;
           ball.vx=(dx2/d2)*aiPow;ball.vy=(dy2/d2)*aiPow;
           ball.vz=2+Math.random()*3;ball.z=0;
-          if(miss) commentary(o.name+' бьёт — мимо!');
-          else commentary(o.name+' бьёт по воротам!');
+          if(miss) commentary(o.name+' shoots — '+pickNoRepeat(COMMENTS.shootMiss));
+          else commentary(o.name+' shoots at goal! '+pickNoRepeat(COMMENTS.shoot));
           exciteFans(0.5);
           return;
         }
       }
-      // Pass more often — build up play
-      if(Math.random()<.02){
+      // Pass only when under pressure (defender nearby)
+      const nearMyPlayers=my.filter(p=>dd(p,o)<50).length;
+      if(nearMyPlayers>0&&Math.random()<.02){
         const mates=opp.filter(x=>x!==o&&x.role!=='GK');
-        // Prefer forward passes
-        const fwd=mates.filter(m=>m.x<o.x);
-        const target=fwd.length>0&&Math.random()<.6?fwd[Math.floor(Math.random()*fwd.length)]:mates[Math.floor(Math.random()*mates.length)];
+        const fwd=mates.filter(m=>m.x<o.x-20);
+        const target=fwd.length>0&&Math.random()<.7?fwd[Math.floor(Math.random()*fwd.length)]:mates[Math.floor(Math.random()*mates.length)];
         relBall();
         const dx2=target.x-ball.x,dy2=target.y-ball.y,d2=Math.sqrt(dx2*dx2+dy2*dy2);
-        ball.vx=(dx2/d2)*3;ball.vy=(dy2/d2)*3;ball.target=target;
+        const pSpd=3.5+Math.random();
+        ball.vx=(dx2/d2)*pSpd;ball.vy=(dy2/d2)*pSpd;ball.target=target;
         return;
       }
+      // Dribble toward goal
       const dx=tx-o.x,dy=ty-o.y,d=Math.sqrt(dx*dx+dy*dy);
-      const sp=o.role==='FW'?1:0.7;
-      o.vx=(dx/d)*sp;o.vy=(dy/d)*sp;
+      const sp=o.role==='FW'?1.6:(o.role==='MF'?1.3:1.0);
+      if(d>5){o.vx=(dx/d)*sp;o.vy=(dy/d)*sp;}
+      else{o.vx*=.8;o.vy*=.8;}
     } else {
-      let tx=o.bx+wander_x, ty=o.by+wander_y;
-      const tb=dd(o,ball);
-      // Only chase ball if close — not the whole team
-      if(ball.free&&o.role!=='GK'&&tb<120){tx=ball.x;ty=ball.y;}
-      if(ball.owner&&ball.owner.side==='my'&&o.role!=='GK'){
-        // Only 1-2 nearest players press, not all
-        if(tb<100){tx=ball.x;ty=ball.y;}
+      // Shift formation based on game state
+      const oppHasBall=ball.owner&&ball.owner.side==='opp';
+      const myHasBall=ball.owner&&ball.owner.side==='my';
+      let shiftX=0;
+      if(oppHasBall){
+        // Team is attacking — push whole team forward
+        if(o.role==='FW')shiftX=-W*.25;
+        else if(o.role==='MF')shiftX=-W*.18;
+        else if(o.role==='DF')shiftX=-W*.12;
+      } else if(myHasBall){
+        // Team defending — compact shape
+        if(o.role==='FW')shiftX=W*.03;
+        else if(o.role==='MF')shiftX=W*.02;
+      } else {
+        // Free ball — push slightly forward
+        if(o.role==='FW')shiftX=-W*.1;
+        else if(o.role==='MF')shiftX=-W*.05;
       }
-      // GK — follows ball but stays on line
+      // Forward runs when teammate has ball
+      let ty=o.by+wander_y;
+      if(oppHasBall&&o.role==='FW'){
+        // FW make diagonal runs into space
+        ty=H/2+(o.by>H/2?1:-1)*Math.sin(time*.6+o.num)*40;
+      }
+      let tx=Math.max(PR,Math.min(W-PR,o.bx+shiftX+wander_x));
+      const tb=dd(o,ball);
+      // Chase free ball — wider radius
+      if(ball.free&&o.role!=='GK'&&tb<180){tx=ball.x;ty=ball.y;}
+      if(myHasBall&&o.role!=='GK'){
+        // Nearest 2-3 press the ball carrier
+        if(tb<140){tx=ball.x;ty=ball.y;}
+      }
+      // GK — follows ball but stays on line, advances when team attacks
       if(o.role==='GK'){
-        tx=W-16;
+        tx=oppHasBall?W-28:W-16;
         ty=Math.max(H/2-GH_HALF+10,Math.min(H/2+GH_HALF-10,ball.y));
       }
 
       const dx=tx-o.x,dy=ty-o.y,d=Math.sqrt(dx*dx+dy*dy);
-      if(d>6){const sp=o.role==='GK'?1.5:0.8;o.vx=(dx/d)*sp;o.vy=(dy/d)*sp;}
+      if(d>6){const sp=o.role==='GK'?1.5:1.1;o.vx=(dx/d)*sp;o.vy=(dy/d)*sp;}
       else{o.vx*=.7;o.vy*=.7;}
 
-      // Steal ball — much harder
-      if(ball.owner&&ball.owner.side==='my'&&dd(o,ball.owner)<PR*2){
-        if(Math.random()<.006) giveBall(o); // very rare auto-steal
+      // Steal ball — only when very close and rare
+      if(ball.owner&&ball.owner.side==='my'&&dd(o,ball.owner)<PR*1.5){
+        if(Math.random()<.007) giveBall(o);
       }
     }
   });
@@ -1545,7 +1717,9 @@ function runAI(){
 // ========== TICK ==========
 function tick(){
   if(!G.on)return;raf=requestAnimationFrame(tick);
-  pollGamepad();update();drainEnergy();
+  pollGamepad();update();drainEnergy();updatePowerBar();
+  // Cancel charge if player lost ball
+  if(shootChargeStart&&(!ctrl||!ctrl.hb))cancelShootCharge();
   // Fan excitement decay + auto-excitement near goals
   fanExcitement=Math.max(0,fanExcitement-0.005);
   if(ball.x>W*0.8||ball.x<W*0.2) exciteFans(Math.max(fanExcitement,0.4)); // near goal = tense
@@ -1594,11 +1768,14 @@ function update(){
 
     // GK saves — goalkeepers intercept shots near goal
     const ballSpeed=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-    // My GK (left side) — saves opponent shots
+    // My GK (left side) — saves opponent shots (70% save chance)
     const myGK=my[0];
-    if(ball.vx<-1&&ballSpeed>2&&ball.x<W*0.15&&dd(myGK,ball)<PR+BR+15){
-      giveBall(myGK);
-      commentary(myGK.name+' берёт мяч! Надёжно!');
+    if(ball.vx<-1&&ballSpeed>2&&ball.x<W*0.15&&dd(myGK,ball)<PR+BR+12){
+      if(Math.random()<0.7){
+        giveBall(myGK);
+        commentary(myGK.name+' '+pickNoRepeat(COMMENTS.gkSave));
+      }
+      // else ball goes through
     }
     // Opponent GK (right side) — saves my shots
     const oppGK=opp[0];
@@ -1606,8 +1783,7 @@ function update(){
       // 30% chance GK saves, 70% goal
       if(Math.random()<0.3){
         giveBall(oppGK);
-        commentary(oppGK.name+' отбивает! Какой сейв!');
-        speak(oppGK.name+' тянет! Отличный сейв!');
+        commentary(oppGK.name+' '+pickNoRepeat(['saves it!','parries it away!','stretches to reach it!','pulls off a save!','diving stop!']));
       }
       // else ball goes through to goal check
     }
@@ -1666,11 +1842,11 @@ function switchPlayer(){
   if(!G.on)return;
   let best=null,bd=Infinity;
   my.forEach(p=>{
-    if(p===ctrl||p.role==='GK')return;
+    if(p===ctrl)return;
     const d=dd(p,ball);
     if(d<bd){bd=d;best=p;}
   });
-  if(best){ctrl=best;commentary('Переключение на '+best.name);}
+  if(best){ctrl=best;}
 }
 
 let lastShooter='';
@@ -1683,19 +1859,17 @@ function goalScored(who){
   ball.vx=0;ball.vy=0;ball.free=false;
   if(who==='my'){
     G.sc[0]++;document.getElementById('s1').textContent=G.sc[0];
-    const scorer=lastShooter||ctrl.name||'Наш игрок';
-    document.getElementById('goalW').textContent=scorer+' забивает!';
-    commentary('ГОООЛ! '+scorer+' забивает! '+pick(['Какой гол!','Красавец!','Стадион ликует!','Невероятный мяч!','В девятку!']));
-    // Celebrate!
+    const scorer=lastShooter||ctrl.name||'Our player';
+    document.getElementById('goalW').textContent=scorer+' scores!';
+    commentary('GOOOAL! '+scorer+' scores! '+pickNoRepeat(['What a goal!','Brilliant!','The crowd goes wild!','Incredible strike!','Top corner!','Back of the net!','What a hit!','Stunning goal!']));
     my.forEach(p=>{p.anim='celebrate';p.animT=60;});
     crowdCheer();
   } else {
     G.sc[1]++;document.getElementById('s2').textContent=G.sc[1];
-    // Find who had the ball
     const scorer=opp.find(o=>dd(o,ball)<40);
-    const name=scorer?scorer.name:'Соперник';
-    document.getElementById('goalW').textContent=name+' забивает...';
-    commentary('Гол... '+name+' забивает в наши ворота. '+pick(['Нужно собраться!','Обидный мяч...','Вратарь не дотянулся.']));
+    const name=scorer?scorer.name:'Opponent';
+    document.getElementById('goalW').textContent=name+' scores...';
+    commentary('Goal... '+name+' scores against us. '+pickNoRepeat(['We need to regroup!','Tough goal to concede...','Keeper couldn\'t reach it.','They score...','Unfortunate.','Must fight back!','Defense caught out.']));
     crowdBoo();
   }
   document.getElementById('goalOv').classList.add('show');
@@ -1708,9 +1882,9 @@ function endMatch(){
   // If draw — penalty shootout!
   if(G.sc[0]===G.sc[1]){
     G.on=false;
-    commentary('Ничья! Серия пенальти!');
+    commentary('It\'s a draw! Penalty shootout!');
     crowdCheer();
-    speak('Ничья! Переходим к серии пенальти!');
+    speak('It\'s a draw! We go to a penalty shootout!');
     setTimeout(()=>startPenalties(),3000);
     return;
   }
@@ -1720,13 +1894,13 @@ function endMatch(){
 
 function finishMatch(){
   if(raf)cancelAnimationFrame(raf);
-  let r='НИЧЬЯ',rw=50;
-  if(G.sc[0]>G.sc[1]){r='ПОБЕДА!';rw=150;}
-  else if(G.sc[0]<G.sc[1]){r='ПОРАЖЕНИЕ';rw=30;}
+  let r='DRAW',rw=50;
+  if(G.sc[0]>G.sc[1]){r='VICTORY!';rw=150;}
+  else if(G.sc[0]<G.sc[1]){r='DEFEAT';rw=30;}
   G.coins+=rw;save();
   document.getElementById('eR').textContent=r;
   document.getElementById('eS').textContent=G.sc[0]+' : '+G.sc[1];
-  document.getElementById('eW').textContent='+'+rw+' монет';
+  document.getElementById('eW').textContent='+'+rw+' coins';
   go('endScreen');
 }
 
@@ -1745,11 +1919,10 @@ function startPenalties(){
   };
   document.getElementById('penOv').classList.add('show');
   updatePenUI();
-  G.on=true;
-  if(raf)cancelAnimationFrame(raf);
-  tick();
-  commentary('Серия пенальти! Удар номер 1!');
-  speak('Серия пенальти начинается!');
+  // Don't resume regular gameplay — penalties are UI-only
+  G.on=false;
+  commentary('Penalty shootout! Kick number 1!');
+  speak('The penalty shootout begins!');
 }
 
 function updatePenUI(){
@@ -1778,27 +1951,30 @@ function updatePenUI(){
   }
 
   if(penState.done){
-    document.getElementById('penHint').textContent='Серия окончена!';
+    document.getElementById('penHint').textContent='Shootout over!';
   } else if(penState.waiting){
-    document.getElementById('penHint').textContent='Соперник бьёт...';
+    document.getElementById('penHint').textContent='Opponent is shooting...';
   } else {
     const kickN=Math.floor(penState.kick/2)+1;
-    document.getElementById('penHint').textContent='Удар '+kickN+'. Нажмите УДАР (X)!';
+    document.getElementById('penHint').textContent='Kick '+kickN+'. Press SHOOT / Space / X!';
   }
 }
 
 function penShoot(){
   if(!penState||penState.done||penState.waiting)return;
 
+  const kickN=Math.floor(penState.kick/2)+1;
+  const mt=TEAMS[G.selTeam],ot=TEAMS[G.oppIdx];
+
   // My turn — I kick
   const scored=Math.random()<0.75;
   penState.results.push({side:'my',scored});
   if(scored){
     penState.my++;
-    commentary('ГОООЛ! Пенальти забит! '+penState.my+':'+penState.opp);
+    commentary(pick(['GOOOAL!','Scored!','Right in the corner!','Keeper had no chance!'])+' '+penState.my+':'+penState.opp);
     crowdCheer();
   } else {
-    commentary(pick(['Мимо!','Вратарь берёт!','Штанга!','Не забил...'])+' '+penState.my+':'+penState.opp);
+    commentary(pick(['Missed!','Keeper saves!','Off the post!','Off the crossbar!','Didn\'t score...','Over the bar!'])+' '+penState.my+':'+penState.opp);
     crowdBoo();
   }
   penState.kick++;
@@ -1810,14 +1986,14 @@ function penShoot(){
 
   // Opponent kicks after delay
   setTimeout(()=>{
-    if(penState.done)return;
+    if(!penState||penState.done)return;
     const oppScored=Math.random()<0.65;
     penState.results.push({side:'opp',scored:oppScored});
     if(oppScored){
       penState.opp++;
-      commentary('Соперник забивает... '+penState.my+':'+penState.opp);
+      commentary(pick([ot.n+' scores...','Opponent scores.','Clinical finish from '+ot.n+'.'])+' '+penState.my+':'+penState.opp);
     } else {
-      commentary('Наш вратарь тянет! '+pick(['Отлично!','Какой сейв!','Берёт!'])+' '+penState.my+':'+penState.opp);
+      commentary(pick(['Our keeper saves!','Save!','Caught it!','Blocked!','Wide of the goal!'])+' '+penState.my+':'+penState.opp);
       crowdCheer();
     }
     penState.kick++;
@@ -1834,27 +2010,27 @@ function checkPenEnd(){
   const opKicks=p.results.filter(r=>r.side==='opp').length;
   const pairs=Math.min(myKicks,opKicks); // completed pairs
 
-  // Normal series: 5 pairs
-  if(pairs>=5 && p.my!==p.opp){
-    penFinish();return true;
-  }
-  // Early finish: if one team can't catch up
+  // Early finish (during first 5 pairs): if one team can't catch up
   if(pairs<5){
     const myLeft=5-myKicks, opLeft=5-opKicks;
-    // If opponent can't catch up even scoring all remaining
     if(p.my > p.opp+opLeft){ penFinish();return true; }
-    // If I can't catch up even scoring all remaining
     if(p.opp > p.my+myLeft){ penFinish();return true; }
   }
-  // Sudden death: after 5 pairs, each new pair — if different result → done
-  if(pairs>=5 && myKicks===opKicks && pairs>5){
-    // Just completed a sudden-death pair
-    if(p.my!==p.opp){ penFinish();return true; }
-    else { commentary('Счёт по-прежнему равный! Ещё одна пара!'); speak('Внезапная смерть продолжается!'); }
-  }
-  if(pairs===5 && p.my===p.opp){
-    commentary('После 5 ударов ничья! Внезапная смерть!');
-    speak('Внезапная смерть!');
+  // After 5 completed pairs
+  if(pairs>=5){
+    if(p.my!==p.opp && myKicks===opKicks){
+      // Both teams kicked same number and scores differ → decided
+      penFinish();return true;
+    }
+    if(p.my===p.opp && myKicks===opKicks){
+      // Equal scores after equal kicks → announce sudden death or continue
+      if(pairs===5){
+        commentary('After 5 kicks it\'s level! Sudden death!');
+        speak('Sudden death!');
+      } else {
+        commentary('Still level! One more pair!');
+      }
+    }
   }
   return false;
 }
@@ -1863,94 +2039,161 @@ function penFinish(){
   penState.done=true;
   const win=penState.my>penState.opp;
   const mt=TEAMS[G.selTeam],ot=TEAMS[G.oppIdx];
+  const matchScore=G.sc[0]+' : '+G.sc[1];
+  const penScore=penState.my+':'+penState.opp;
   if(win){
-    commentary('ПОБЕДА ПО ПЕНАЛЬТИ! '+mt.n+' побеждает '+penState.my+':'+penState.opp+'!');
-    speak(mt.n+' побеждает в серии пенальти! '+penState.my+' '+penState.opp+'!');
+    commentary('VICTORY ON PENALTIES! '+mt.n+' wins!');
+    speak(mt.n+' wins the penalty shootout! '+penState.my+' '+penState.opp+'!');
     crowdCheer();
-    // Don't add pen score to match score — show separately
-    G.sc[0]+=1; // just mark win
   } else {
-    commentary('Поражение по пенальти... '+ot.n+' побеждает '+penState.opp+':'+penState.my);
-    speak('К сожалению, поражение в серии пенальти.');
+    commentary('Defeat on penalties... '+ot.n+' wins.');
+    speak('Unfortunately, a defeat on penalties.');
     crowdBoo();
-    G.sc[1]+=1;
   }
   updatePenUI();
+  const rw=win?150:30;
   setTimeout(()=>{
     document.getElementById('penOv').classList.remove('show');
-    // Override end screen text
-    document.getElementById('eR').textContent=win?'ПОБЕДА ПО ПЕНАЛЬТИ!':'ПОРАЖЕНИЕ ПО ПЕНАЛЬТИ';
-    document.getElementById('eS').textContent=G.sc[0]-1+' : '+G.sc[1]-(win?0:1)+' (пен. '+penState.my+':'+penState.opp+')';
-    document.getElementById('eW').textContent='+'+(win?150:30)+' монет';
-    G.coins+=(win?150:30);save();
+    document.getElementById('eR').textContent=win?'VICTORY ON PENALTIES!':'DEFEAT ON PENALTIES';
+    document.getElementById('eS').textContent=matchScore+' (pen. '+penScore+')';
+    document.getElementById('eW').textContent='+'+rw+' coins';
+    G.coins+=rw;save();
+    penState=null;
     go('endScreen');
   },3500);
 }
 
 // ========== COMMENTARY ==========
 const COMMENTS={
-  start:['Матч начинается! Болельщики в предвкушении!','Судья даёт свисток! Начинаем!','Добро пожаловать на стадион! Сегодня нас ждёт отличный матч!'],
-  nearMiss:['Штанга!','Мимо! Чуть-чуть!','Перекладина! Как не залетел!'],
-  halfTime:['Середина матча! Команды показывают хорошую игру!','Полтора минуты позади, впереди ещё столько же!'],
-  lastMin:['Последняя минута! Кто забьёт решающий гол?','Концовка матча! Нервы на пределе!','Добавленное время! Всё решится сейчас!'],
+  start:['Kick off! The crowd is buzzing!','The referee blows the whistle!','Welcome to the stadium! What a match we have today!','The teams are out! Electric atmosphere!','And we are underway!'],
+  nearMiss:['Off the post!','Just wide!','Off the crossbar!','So close!','Inches away from goal!','Nearly!'],
+  halfTime:['Great first half from both sides!','Forty-five minutes gone, still plenty to play for!'],
+  lastMin:['Last minute! Who will score the winner?','End of the match! Nerves are high!','Stoppage time! It all comes down to this!','Final seconds of the match!','The referee checks his watch!'],
+  pass:['Great pass!','Lovely ball!','Nice distribution!','Good combination!','Excellent vision!','Through ball!','Perfectly weighted!','Finds his teammate!'],
+  shoot:['Powerful shot!','What a strike!','Dangerous!','Heading for goal!','On target!','Thunderbolt!','First time shot!','He goes for goal!'],
+  shootMiss:['Wide!','Over the bar!','Gone out for a throw!','Off target!','Missed it!','Way off!'],
+  tackle:['Clean tackle!','Great challenge!','Won the ball!','Superb!','Perfect timing!','Brilliant slide!'],
+  skill:['brilliant skill!','beats his man!','what technique!','beautiful dribble!','showing his class!','nutmeg!','leaves him for dead!'],
+  rainbow:['rainbow flick!','flicks it over!','what a trick!','incredible!','showboating!','absolutely outrageous!'],
+  gkSave:['Great save!','What a stop!','Safe hands!','Brilliant dive!','Pulled it out!','Solid!'],
 };
 
+let commentHistory=[];
+const COMMENT_HISTORY_SIZE=8;
+
+function pickNoRepeat(arr){
+  // Avoid repeating recent phrases
+  const available=arr.filter(a=>!commentHistory.includes(a));
+  const chosen=available.length>0?pick(available):pick(arr);
+  commentHistory.push(chosen);
+  if(commentHistory.length>COMMENT_HISTORY_SIZE)commentHistory.shift();
+  return chosen;
+}
+
 function midgameComment(){
-  // Smart commentary based on game state
   const mt=TEAMS[G.selTeam],ot=TEAMS[G.oppIdx];
   const owner=ball.owner;
-  if(!owner)return pick(['Мяч ничей, борьба в центре поля!','Свободный мяч!']);
+  const sc=G.sc[0]+'-'+G.sc[1];
+  const matchMin=Math.floor(G.time/60);
+
+  if(!owner){
+    return pickNoRepeat([
+      'Loose ball in midfield!',
+      'Free ball! Who will get to it first?',
+      'Both teams battling for possession!',
+      'Nobody giving an inch!',
+      'The ball is up for grabs!',
+    ]);
+  }
   if(owner.side==='my'){
-    return pick([
-      owner.name+' контролирует мяч.',
-      owner.name+' продвигается вперёд.',
-      mt.n+' владеет мячом. '+owner.name+' ищет передачу.',
-      'Хорошее владение от '+mt.n+'! '+owner.name+' на мяче.',
-      owner.name+' в центре поля, оценивает ситуацию.',
-    ]);
+    const phrases=[
+      owner.name+' on the ball.',
+      owner.name+' drives forward.',
+      mt.n+' in possession. '+owner.name+' looking for options.',
+      'Good possession from '+mt.n+'!',
+      owner.name+' surveying the pitch.',
+      mt.n+' building an attack. '+owner.name+' on the ball.',
+      owner.name+' picks up the pace!',
+      mt.n+' with the ball. Score '+sc+'.',
+    ];
+    if(owner.role==='FW')phrases.push(owner.name+' in a dangerous position!',owner.name+' looking to shoot!');
+    if(owner.role==='DF')phrases.push(owner.name+' playing it out from the back.',owner.name+' starting the attack from deep.');
+    if(matchMin>70)phrases.push('Minute '+matchMin+'. '+mt.n+' on the ball.');
+    return pickNoRepeat(phrases);
   } else {
-    return pick([
-      ot.n+' владеет мячом. '+owner.name+' на мяче.',
-      owner.name+' у соперника, нужно отобрать!',
-      'Атака '+ot.n+'! '+owner.name+' ведёт мяч.',
-      owner.name+' пытается пройти, наши защитники встречают.',
-    ]);
+    const phrases=[
+      ot.n+' in possession. '+owner.name+' on the ball.',
+      owner.name+' has the ball, need to win it back!',
+      ot.n+' on the attack! '+owner.name+' carries it forward.',
+      owner.name+' trying to get past the defense.',
+      ot.n+' pushing forward. Watch out!',
+      owner.name+' advancing toward our goal.',
+      ot.n+' passing it around. Need to press!',
+    ];
+    if(owner.role==='FW')phrases.push('Danger! '+owner.name+' leading the attack!',ot.n+' forward is threatening!');
+    if(matchMin>70)phrases.push('Minute '+matchMin+', '+ot.n+' pressing. Score '+sc+'.');
+    return pickNoRepeat(phrases);
   }
 }
 let lastComment=0;
 
-let ruVoice=null;
-function findRuVoice(){
+let enVoice=null;
+function findEnVoice(){
   const voices=speechSynthesis.getVoices();
   if(!voices.length)return;
-  // Ищем мужской русский голос (Yuri, Dmitri, Pavel, male)
-  const ruVoices=voices.filter(v=>v.lang.startsWith('ru'));
-  ruVoice=
-    ruVoices.find(v=>/yuri|dmitr|pavel|male|муж/i.test(v.name))||
-    ruVoices.find(v=>!/milena|irina|katya|женск|female|alice/i.test(v.name))||
-    ruVoices[0]||
-    voices.find(v=>v.lang.startsWith('en')&&/male|daniel|james|google.*us/i.test(v.name))||
+  // Find a male English voice (Daniel, James, Google US male)
+  const enVoices=voices.filter(v=>v.lang.startsWith('en'));
+  enVoice=
+    enVoices.find(v=>/daniel|james|male|google.*us/i.test(v.name))||
+    enVoices.find(v=>!/female|samantha|karen|moira|fiona|victoria|alice/i.test(v.name))||
+    enVoices[0]||
     voices[0]||null;
-  console.log('Голос комментатора:',ruVoice?.name,ruVoice?.lang);
+  console.log('Commentary voice:',enVoice?.name,enVoice?.lang);
 }
 if(typeof speechSynthesis!=='undefined'){
-  speechSynthesis.onvoiceschanged=()=>{ ruVoice=null; findRuVoice(); };
-  findRuVoice();
+  speechSynthesis.onvoiceschanged=()=>{ enVoice=null; findEnVoice(); };
+  findEnVoice();
 }
+
+let speakQueue=[];
+let speaking=false;
 
 function speak(text){
   try{
     if(typeof speechSynthesis==='undefined')return;
-    speechSynthesis.cancel();
-    if(!ruVoice)findRuVoice();
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang='ru-RU';
-    u.rate=1.05;
-    u.pitch=0.6; // низкий мужской голос комментатора
-    u.volume=1;
-    if(ruVoice)u.voice=ruVoice;
-    speechSynthesis.speak(u);
+    if(!enVoice)findEnVoice();
+    // If already speaking, queue it (but limit queue to 2 to avoid pile-up)
+    if(speechSynthesis.speaking||speaking){
+      if(speakQueue.length<2)speakQueue.push(text);
+      // Skip if queue is full — don't interrupt current phrase
+      return;
+    }
+    speakNow(text);
   }catch(e){}
+}
+
+function speakNow(text){
+  try{
+    if(typeof speechSynthesis==='undefined')return;
+    if(!enVoice)findEnVoice();
+    speaking=true;
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US';
+    u.rate=1.1;
+    u.pitch=0.6;
+    u.volume=1;
+    if(enVoice)u.voice=enVoice;
+    u.onend=()=>{
+      speaking=false;
+      // Speak next queued phrase
+      if(speakQueue.length>0){
+        const next=speakQueue.shift();
+        speakNow(next);
+      }
+    };
+    u.onerror=()=>{speaking=false;speakQueue=[];};
+    speechSynthesis.speak(u);
+  }catch(e){speaking=false;}
 }
 
 function commentary(text){
@@ -1964,18 +2207,24 @@ function commentary(text){
 }
 
 function autoComment(){
-  if(Date.now()-lastComment<5000)return;
+  if(Date.now()-lastComment<10000)return;
   if(!G.on)return;
   const t=G.time;
   const matchMin=Math.floor(t/60);
-  // Check once per match-minute window (t is match-seconds, updates by 18 each real sec)
-  if(matchMin===45&&t<45*60+20){ commentary('Конец первого тайма! Счёт '+G.sc[0]+':'+G.sc[1]); speak('Перерыв! Счёт '+G.sc[0]+' '+G.sc[1]); }
-  else if(matchMin===88&&t<88*60+20) commentary(pick(COMMENTS.lastMin));
+  const mt=TEAMS[G.selTeam],ot=TEAMS[G.oppIdx];
+  const sc=G.sc[0]+':'+G.sc[1];
+  // Check once per match-minute window
+  if(matchMin===45&&t<45*60+20){ commentary('End of the first half! Score '+sc); }
+  else if(matchMin>=87&&t<88*60+20) commentary(pickNoRepeat(COMMENTS.lastMin));
   else if((matchMin===15||matchMin===30||matchMin===60||matchMin===75)&&t%60<20){
-    const mt=TEAMS[G.selTeam],ot=TEAMS[G.oppIdx];
-    commentary(matchMin+'-я минута. '+mt.n+' '+G.sc[0]+':'+G.sc[1]+' '+ot.n);
+    const phrases=[
+      'Minute '+matchMin+'. '+mt.n+' '+sc+' '+ot.n,
+      matchMin+' minutes played. Score '+sc+'.',
+      matchMin+' minutes gone. '+mt.n+' vs '+ot.n+', '+sc+'.',
+    ];
+    commentary(pickNoRepeat(phrases));
   }
-  else if(Math.random()<.003) commentary(midgameComment());
+  else if(Math.random()<.0015) commentary(midgameComment());
 }
 function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
 
@@ -2384,9 +2633,21 @@ function createPlayerMesh(){
   const handR=new THREE.Mesh(new THREE.SphereGeometry(0.1,6,6),handMat);
   handR.position.set(0.9,1.6,0);group.add(handR);
 
+  // Jersey number on back (canvas texture)
+  const numCanvas=document.createElement('canvas');
+  numCanvas.width=64;numCanvas.height=64;
+  const numCtx=numCanvas.getContext('2d');
+  const numTex=new THREE.CanvasTexture(numCanvas);
+  numTex.minFilter=THREE.LinearFilter;
+  const numMat=new THREE.SpriteMaterial({map:numTex,transparent:true,depthTest:false});
+  const numSprite=new THREE.Sprite(numMat);
+  numSprite.position.set(0,2.2,-0.5);
+  numSprite.scale.set(0.9,0.9,1);
+  group.add(numSprite);
+
   group.castShadow=true;
   scene.add(group);
-  return {group,body,head,hair,legL,legR,armL,armR,shorts,bodyMat,headMat,hairMat,shortMat,stripe,stripeMat,legMat,neckMat,handL,handR,handMat,bootL,bootR,thighL,thighR};
+  return {group,body,head,hair,legL,legR,armL,armR,shorts,bodyMat,headMat,hairMat,shortMat,stripe,stripeMat,legMat,neckMat,handL,handR,handMat,bootL,bootR,thighL,thighR,numCanvas,numCtx,numTex,numSprite};
 }
 
 function createRefMesh(){
@@ -2463,6 +2724,23 @@ function draw(){
     if(m.legMat)m.legMat.color.set(p.c1); // socks = jersey color
     if(m.neckMat)m.neckMat.color.set(p.skin||0xf5c6a0);
     if(m.handMat)m.handMat.color.set(p.skin||0xf5c6a0);
+    // Jersey number — render once per player change
+    if(m.numCanvas&&m._lastNum!==p.num){
+      m._lastNum=p.num;
+      const nc=m.numCtx,sz=64;
+      nc.clearRect(0,0,sz,sz);
+      // Circle background
+      nc.fillStyle='rgba(0,0,0,0.55)';
+      nc.beginPath();nc.arc(sz/2,sz/2,sz/2-2,0,Math.PI*2);nc.fill();
+      // Number text
+      nc.fillStyle='#fff';
+      nc.font='bold 36px Arial';
+      nc.textAlign='center';nc.textBaseline='middle';
+      nc.fillText(String(p.num),sz/2,sz/2+1);
+      m.numTex.needsUpdate=true;
+    }
+    // Position number above head
+    if(m.numSprite)m.numSprite.position.set(0,4.5,0);
 
     const isCtrl=p===ctrl;
     const aT=p.animT||0;
